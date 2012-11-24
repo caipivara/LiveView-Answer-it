@@ -11,8 +11,19 @@ import android.provider.CallLog;
 
 import com.makingiants.answerit.model.calls.Call;
 
+/**
+ * Know how to collect the call log
+ */
 public class CallLogDAO {
 	
+	/**
+	 * Get the actual call log on the device
+	 * 
+	 * @param calls number of maximum calls to find
+	 * @param context 
+	 * 
+	 * @return list of calls with size == calls
+	 */
 	public static ArrayList<Call> getCallLog(int calls, Context context) {
 		ArrayList<Call> callLogs = new ArrayList<Call>();
 		Set<String> callsAdded = new LinkedHashSet<String>();

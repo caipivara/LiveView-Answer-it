@@ -8,14 +8,17 @@ import android.util.Log;
 import com.makingiants.answerit.R;
 import com.makingiants.answerit.model.dao.CallLogDAO;
 
+/**
+ * Manage the CallLog list
+ */
 public class CallManager {
 	
 	// ****************************************************************
 	// Attributes
 	// ****************************************************************
 	
-	private int numberLogCalls;
 	private ArrayList<Call> calls;
+	private int numberLogCalls;
 	private int actualCall;
 	
 	// ****************************************************************
@@ -35,6 +38,10 @@ public class CallManager {
 		
 	}
 	
+	/**
+	 * Update the actual list of calls
+	 * @param context
+	 */
 	public void updateCalls(final Context context) {
 		this.calls = CallLogDAO.getCallLog(numberLogCalls, context);
 	}
@@ -43,14 +50,18 @@ public class CallManager {
 	// Accessor Methods
 	// ****************************************************************
 	
+	/**
+	 * Get the actual call
+	 * @return actual call
+	 */
 	public Call getActualCall() {
 		return calls.get(actualCall);
 	}
 	
-	// ****************************************************************
-	// Jump Methods
-	// ****************************************************************
-	
+	/**
+	 * Get the next call and update the actual call with it
+	 * @return new call
+	 */
 	public Call getNextCall() {
 		
 		if (++actualCall >= calls.size()) {
@@ -60,6 +71,10 @@ public class CallManager {
 		
 	}
 	
+	/**
+	 * Get the previous call and update the actual call with it
+	 * @return new call
+	 */
 	public Call getPreviousCall() {
 		
 		if (--actualCall < 0) {

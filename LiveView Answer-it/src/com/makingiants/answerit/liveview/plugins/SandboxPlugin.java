@@ -40,15 +40,18 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.makingiants.answerit.R;
-import com.makingiants.answerit.model.MessageManager;
 import com.makingiants.answerit.model.calls.Call;
 import com.makingiants.answerit.model.calls.CallManager;
+import com.makingiants.answerit.model.messages.MessageManager;
 import com.sonyericsson.extras.liveview.plugins.AbstractPluginService;
 import com.sonyericsson.extras.liveview.plugins.PluginConstants;
 import com.sonyericsson.extras.liveview.plugins.PluginUtils;
 
 public class SandboxPlugin extends AbstractPluginService {
 	
+	/**
+	 * How many messages are in preferences
+	 */
 	private final static int NUMBER_OF_MESSAGES = 11;
 	
 	// ****************************************************************
@@ -57,11 +60,15 @@ public class SandboxPlugin extends AbstractPluginService {
 	
 	// Used to update the LiveView screen
 	private Handler handler;
+	
+	// Model managers
 	private MessageManager messageManager;
 	private CallManager callManager;
 	
 	// Streams for background image in LiveView
 	private InputStream isBackground;
+	
+	// Paint used for text
 	private Paint textPaint;
 	
 	// ****************************************************************

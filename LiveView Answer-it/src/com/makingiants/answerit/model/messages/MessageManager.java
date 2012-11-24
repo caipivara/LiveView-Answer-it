@@ -36,7 +36,7 @@ public class MessageManager {
 	 * @param message
 	 */
 	public void addMessage(int index, String message) {
-		messages[index - 1] = message;
+		messages[index] = message;
 	}
 	
 	/**

@@ -23,8 +23,6 @@
 
 package com.makingiants.answerit.liveview.plugins;
 
-import java.io.InputStream;
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,7 +35,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
+import android.telephony.SmsManager;
 
 import com.makingiants.answerit.R;
 import com.makingiants.answerit.model.calls.Call;
@@ -66,7 +64,11 @@ public class SandboxPlugin extends AbstractPluginService {
 	private CallManager callManager;
 	
 	// Streams for background image in LiveView
-	private InputStream isBackground;
+	private Bitmap bitmapBackground;
+	
+	// Send image attributes
+	private Bitmap bitmapSend;// Used to show send image while sending
+	private boolean showingSendImage;// Used to disable any interaction while bitmapSend is showed
 	
 	// Paint used for text
 	private Paint textPaint;
@@ -79,8 +81,14 @@ public class SandboxPlugin extends AbstractPluginService {
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
 		
-		if (isBackground == null) {
-			isBackground = this.getResources().openRawResource(R.drawable.background);
+		if (bitmapBackground == null) {
+			bitmapBackground = BitmapFactory.decodeStream(this.getResources().openRawResource(
+			        R.drawable.background));
+		}
+		
+		if (bitmapSend == null) {
+			bitmapSend = BitmapFactory.decodeStream(this.getResources().openRawResource(
+			        R.drawable.background));
 		}
 		
 		if (handler == null) {
@@ -95,7 +103,6 @@ public class SandboxPlugin extends AbstractPluginService {
 			textPaint.setShadowLayer(5.0f, 1.0f, 1.0f, Color.rgb(255, 230, 175));
 			textPaint.setAntiAlias(true);
 			textPaint.setTextAlign(Align.CENTER);
-			
 		}
 		
 		if (messageManager == null) {
@@ -108,6 +115,7 @@ public class SandboxPlugin extends AbstractPluginService {
 			callManager.updateCalls(this.getApplicationContext());
 		}
 		
+		showingSendImage = false;
 	}
 	
 	@Override
@@ -153,7 +161,6 @@ public class SandboxPlugin extends AbstractPluginService {
 					        getBackgroundBitmapWithCall(call, message));
 				}
 			}, 500);
-			
 		}
 		
 	}
@@ -211,7 +218,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * For sandbox plugins, this means when the user has pressed the action button to start the plugin.
 	 */
 	protected void startPlugin() {
-		Log.d(PluginConstants.LOG_TAG, "startPlugin");
+		// // Log.d(PluginConstants.LOG_TAG, "startPlugin");
 		
 		// Check if plugin is enabled.
 		if (mSharedPreferences.getBoolean(PluginConstants.PREFERENCES_PLUGIN_ENABLED, false)) {
@@ -225,7 +232,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * For sandbox plugins, this means when the user has long-pressed the action button to stop the plugin.
 	 */
 	protected void stopPlugin() {
-		Log.d(PluginConstants.LOG_TAG, "stopPlugin");
+		// // Log.d(PluginConstants.LOG_TAG, "stopPlugin");
 		stopWork();
 	}
 	
@@ -238,49 +245,68 @@ public class SandboxPlugin extends AbstractPluginService {
 	 */
 	protected void button(String buttonType, boolean doublepress, boolean longpress) {
 		
-		if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_UP)) {
-			
-			final Call call = callManager.getPreviousCall();
-			String message = messageManager.getActualMessage();
-			
-			//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
-			PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-			        getBackgroundBitmapWithCall(call, message));
-			
-		} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_DOWN)) {
-			
-			final Call call = callManager.getNextCall();
-			String message = messageManager.getActualMessage();
-			//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
-			PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-			        getBackgroundBitmapWithCall(call, message));
-			
-		} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_LEFT)) {
-			final Call call = callManager.getActualCall();
-			String message = messageManager.getPreviousMessage();
-			//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
-			PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-			        getBackgroundBitmapWithCall(call, message));
-			
-		} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_RIGHT)) {
-			final Call call = callManager.getActualCall();
-			String message = messageManager.getNextMessage();
-			//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
-			PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-			        getBackgroundBitmapWithCall(call, message));
-			
-		} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_SELECT)) {
-			
-			Log.d("MESSAGE SENDED",
-			        callManager.getActualCall().getNumber() + " " + messageManager.getActualMessage());
-			
-			mLiveViewAdapter.vibrateControl(mPluginId, 0, 400);
-			/*SmsManager shortMessageManager = SmsManager.getDefault();
-			
-			shortMessageManager.sendTextMessage(callManager.getActualCall().getNumber(), null,
-			        messageManager.getActualMessage(), null, null);
-			*/
-			
+		if (!showingSendImage) {
+			if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_UP)) {
+				
+				final Call call = callManager.getPreviousCall();
+				String message = messageManager.getActualMessage();
+				
+				//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
+				PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+				        getBackgroundBitmapWithCall(call, message));
+				
+			} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_DOWN)) {
+				
+				final Call call = callManager.getNextCall();
+				String message = messageManager.getActualMessage();
+				//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
+				PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+				        getBackgroundBitmapWithCall(call, message));
+				
+			} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_LEFT)) {
+				final Call call = callManager.getActualCall();
+				String message = messageManager.getPreviousMessage();
+				//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
+				PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+				        getBackgroundBitmapWithCall(call, message));
+				
+			} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_RIGHT)) {
+				final Call call = callManager.getActualCall();
+				String message = messageManager.getNextMessage();
+				//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
+				PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+				        getBackgroundBitmapWithCall(call, message));
+				
+			} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_SELECT)) {
+				
+				showingSendImage = true;
+				
+				// Show send image
+				PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId, bitmapSend);
+				
+				mLiveViewAdapter.vibrateControl(mPluginId, 0, 200);
+				
+				// Send message
+				SmsManager shortMessageManager = SmsManager.getDefault();
+				
+				shortMessageManager.sendTextMessage(callManager.getActualCall().getNumber(), null,
+				        messageManager.getActualMessage(), null, null);
+				
+				// Set the schedule to allow sending again and show send image for a while
+				handler.postDelayed(new Runnable() {
+					
+					public void run() {
+						final Call call = callManager.getActualCall();
+						final String message = messageManager.getActualMessage();
+						
+						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+						        getBackgroundBitmapWithCall(call, message));
+						
+						showingSendImage = false;
+					}
+				}, 500);
+				
+			}
 		}
 		
 	}
@@ -289,15 +315,15 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * Called by the LiveView application to indicate the capabilites of the LiveView device.
 	 */
 	protected void displayCaps(int displayWidthPx, int displayHeigthPx) {
-		Log.d(PluginConstants.LOG_TAG, "displayCaps - width " + displayWidthPx + ", height "
-		        + displayHeigthPx);
+		// // Log.d(PluginConstants.LOG_TAG, "displayCaps - width " + displayWidthPx + ", height "
+		//       + displayHeigthPx);
 	}
 	
 	/**
 	 * Called by the LiveView application when the plugin has been kicked out by the framework.
 	 */
 	protected void onUnregistered() {
-		Log.d(PluginConstants.LOG_TAG, "onUnregistered");
+		// // Log.d(PluginConstants.LOG_TAG, "onUnregistered");
 		stopWork();
 	}
 	
@@ -306,7 +332,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * You could e.g. open a browser and go to a specific URL, or open the music player.
 	 */
 	protected void openInPhone(String openInPhoneAction) {
-		Log.d(PluginConstants.LOG_TAG, "openInPhone: " + openInPhoneAction);
+		// // Log.d(PluginConstants.LOG_TAG, "openInPhone: " + openInPhoneAction);
 	}
 	
 	/**
@@ -314,9 +340,6 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * 0 = screen is off, 1 = screen is on
 	 */
 	protected void screenMode(int mode) {
-		if (mode != PluginConstants.LIVE_SCREEN_MODE_ON) {
-			startWork();
-		}
 	}
 	
 	// ****************************************************************
@@ -325,14 +348,18 @@ public class SandboxPlugin extends AbstractPluginService {
 	
 	private Bitmap getBackgroundBitmapWithCall(final Call call, String message) {
 		
-		final Bitmap background = BitmapFactory.decodeStream(isBackground).copy(Bitmap.Config.RGB_565,
-		        true);
+		final Bitmap background = bitmapBackground.copy(Bitmap.Config.RGB_565, true);
 		
 		final Canvas canvas = new Canvas(background);
 		
-		canvas.drawText(call.getName(), 0, 20, textPaint);
-		canvas.drawText(call.getNumber(), 0, 40, textPaint);
-		canvas.drawText(message, 0, 90, textPaint);
+		String name = call.getName();
+		String number = call.getNumber();
+		
+		canvas.drawText(name, (PluginConstants.LIVEVIEW_SCREEN_X - name.length()) / 2, 20, textPaint);
+		canvas.drawText(number, (PluginConstants.LIVEVIEW_SCREEN_X - number.length()) / 2, 40,
+		        textPaint);
+		canvas.drawText(message, (PluginConstants.LIVEVIEW_SCREEN_X - message.length()) / 2, 90,
+		        textPaint);
 		
 		return background;
 	}

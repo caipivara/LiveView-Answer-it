@@ -3,7 +3,6 @@ package com.makingiants.answerit.model.calls;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.makingiants.answerit.R;
 import com.makingiants.answerit.model.dao.CallLogDAO;
@@ -29,10 +28,6 @@ public class CallManager {
 		
 		numberLogCalls = context.getResources().getInteger(R.integer.number_log_calls);
 		this.calls = CallLogDAO.getCallLog(numberLogCalls, context);
-		
-		for (int i = 0; i < calls.size(); i++) {
-			Log.e("MEssage", calls.get(i).getName() + " " + calls.get(i).getNumber());
-		}
 		
 		this.actualCall = 0;
 		

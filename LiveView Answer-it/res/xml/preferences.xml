@@ -1,0 +1,55 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Plugin template" >
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="pluginEnabled"
+        android:order="0"
+        android:title="Enabled" />
+    <!-- Add your additional preferences here. -->
+    <EditTextPreference
+        android:key="message_1"
+        android:order="1"
+        android:title="Message 1" />
+    <EditTextPreference
+        android:key="message_2"
+        android:order="2"
+        android:title="Message 2" />
+    <EditTextPreference
+        android:key="message_3"
+        android:order="3"
+        android:title="Message 3" />
+    <EditTextPreference
+        android:key="message_4"
+        android:order="4"
+        android:title="Message 4" />
+    <EditTextPreference
+        android:key="message_5"
+        android:order="5"
+        android:title="Message 5" />
+    <EditTextPreference
+        android:key="message_6"
+        android:order="6"
+        android:title="Message 6" />
+    <EditTextPreference
+        android:key="message_7"
+        android:order="7"
+        android:title="Message 7" />
+    <EditTextPreference
+        android:key="message_8"
+        android:order="8"
+        android:title="Message 8" />
+    <EditTextPreference
+        android:key="message_9"
+        android:order="9"
+        android:title="Message 9" />
+    <EditTextPreference
+        android:key="message_10"
+        android:order="10"
+        android:title="Message 10" />
+    <EditTextPreference
+        android:key="message_11"
+        android:order="11"
+        android:title="Message 11" />
+
+</PreferenceScreen>

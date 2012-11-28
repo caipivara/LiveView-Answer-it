@@ -30,7 +30,8 @@
 
         <activity
             android:name="com.sonyericsson.extras.liveview.plugins.PluginPreferences"
-            android:label="Answer-it" >
+            android:label="Answer-it" 
+            >
             <intent-filter>
                 <action android:name="com.makingiants.answerit.liveview.plugins.PREFERENCES" >
                 </action>

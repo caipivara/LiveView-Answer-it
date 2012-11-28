@@ -31,11 +31,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Align;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.IBinder;
-import android.telephony.SmsManager;
 
 import com.makingiants.answerit.R;
 import com.makingiants.answerit.model.calls.Call;
@@ -71,7 +69,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	private boolean showingSendImage;// Used to disable any interaction while bitmapSend is showed
 	
 	// Paint used for text
-	private Paint textPaint;
+	private Paint bigTextPaint, littleTextPaint;
 	
 	// ****************************************************************
 	// Service Overrides
@@ -88,21 +86,31 @@ public class SandboxPlugin extends AbstractPluginService {
 		
 		if (bitmapSend == null) {
 			bitmapSend = BitmapFactory.decodeStream(this.getResources().openRawResource(
-			        R.drawable.background));
+			        R.drawable.background_sent));
 		}
 		
 		if (handler == null) {
 			handler = new Handler();
 		}
 		
-		if (textPaint == null) {
-			textPaint = new Paint();
-			textPaint.setColor(Color.WHITE);
-			textPaint.setTextSize(13); // Text Size
-			textPaint.setTypeface(Typeface.SANS_SERIF);
-			textPaint.setShadowLayer(5.0f, 1.0f, 1.0f, Color.rgb(255, 230, 175));
-			textPaint.setAntiAlias(true);
-			textPaint.setTextAlign(Align.CENTER);
+		if (bigTextPaint == null) {
+			bigTextPaint = new Paint();
+			bigTextPaint.setColor(Color.WHITE);
+			bigTextPaint.setTextSize(15); // Text Size
+			bigTextPaint.setTypeface(Typeface.SANS_SERIF);
+			//bigTextPaint.setShadowLayer(5.0f, 0.0f, 0.0f, Color.WHITE);
+			bigTextPaint.setAntiAlias(true);
+			bigTextPaint.setTextAlign(Paint.Align.CENTER);
+		}
+		
+		if (littleTextPaint == null) {
+			littleTextPaint = new Paint();
+			littleTextPaint.setColor(Color.WHITE);
+			littleTextPaint.setTextSize(11); // Text Size
+			littleTextPaint.setTypeface(Typeface.SANS_SERIF);
+			//littleTextPaint.setShadowLayer(5.0f, 0.0f, 0.0f, Color.WHITE);
+			littleTextPaint.setAntiAlias(true);
+			littleTextPaint.setTextAlign(Paint.Align.CENTER);
 		}
 		
 		if (messageManager == null) {
@@ -160,7 +168,7 @@ public class SandboxPlugin extends AbstractPluginService {
 					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 					        getBackgroundBitmapWithCall(call, message));
 				}
-			}, 500);
+			}, 1000);
 		}
 		
 	}
@@ -220,11 +228,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	protected void startPlugin() {
 		// // Log.d(PluginConstants.LOG_TAG, "startPlugin");
 		
-		// Check if plugin is enabled.
-		if (mSharedPreferences.getBoolean(PluginConstants.PREFERENCES_PLUGIN_ENABLED, false)) {
-			startWork();
-		}
-		
+		startWork();
 	}
 	
 	/**
@@ -279,33 +283,34 @@ public class SandboxPlugin extends AbstractPluginService {
 				
 			} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_SELECT)) {
 				
-				showingSendImage = true;
-				
-				// Show send image
-				PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId, bitmapSend);
-				
-				mLiveViewAdapter.vibrateControl(mPluginId, 0, 200);
-				
-				// Send message
-				SmsManager shortMessageManager = SmsManager.getDefault();
-				
-				shortMessageManager.sendTextMessage(callManager.getActualCall().getNumber(), null,
-				        messageManager.getActualMessage(), null, null);
-				
-				// Set the schedule to allow sending again and show send image for a while
-				handler.postDelayed(new Runnable() {
+				if (!showingSendImage) {
+					showingSendImage = true;
 					
-					public void run() {
-						final Call call = callManager.getActualCall();
-						final String message = messageManager.getActualMessage();
+					// Show send image
+					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId, bitmapSend);
+					
+					mLiveViewAdapter.vibrateControl(mPluginId, 0, 200);
+					
+					// Send message
+					/*SmsManager shortMessageManager = SmsManager.getDefault();
+					
+					shortMessageManager.sendTextMessage(callManager.getActualCall().getNumber(), null,
+					        messageManager.getActualMessage(), null, null);
+					*/
+					// Set the schedule to allow sending again and show send image for a while
+					handler.postDelayed(new Runnable() {
 						
-						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-						        getBackgroundBitmapWithCall(call, message));
-						
-						showingSendImage = false;
-					}
-				}, 500);
-				
+						public void run() {
+							final Call call = callManager.getActualCall();
+							final String message = messageManager.getActualMessage();
+							
+							PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+							        getBackgroundBitmapWithCall(call, message));
+							
+							showingSendImage = false;
+						}
+					}, 1000);
+				}
 			}
 		}
 		
@@ -352,16 +357,58 @@ public class SandboxPlugin extends AbstractPluginService {
 		
 		final Canvas canvas = new Canvas(background);
 		
-		String name = call.getName();
+		// Draw the name and number
 		String number = call.getNumber();
-		
-		canvas.drawText(name, (PluginConstants.LIVEVIEW_SCREEN_X - name.length()) / 2, 20, textPaint);
-		canvas.drawText(number, (PluginConstants.LIVEVIEW_SCREEN_X - number.length()) / 2, 40,
-		        textPaint);
-		canvas.drawText(message, (PluginConstants.LIVEVIEW_SCREEN_X - message.length()) / 2, 90,
-		        textPaint);
+		String[] name = trimText(call.getName(), 14);
+		if (name.length == 2) {
+			
+			canvas.drawText(name[0], PluginConstants.LIVEVIEW_SCREEN_X / 2, 35, bigTextPaint);
+			canvas.drawText(name[1], PluginConstants.LIVEVIEW_SCREEN_X / 2, 50, bigTextPaint);
+			canvas.drawText(number, (PluginConstants.LIVEVIEW_SCREEN_X - number.length()) / 2, 65,
+			        littleTextPaint);
+		} else {
+			
+			canvas.drawText(name[0], PluginConstants.LIVEVIEW_SCREEN_X / 2, 40, bigTextPaint);
+			canvas.drawText(number, (PluginConstants.LIVEVIEW_SCREEN_X - number.length()) / 2, 55,
+			        littleTextPaint);
+			
+		}
+		// Draw message
+		String[] messageTrimed = trimText(message, 18);
+		canvas.drawText(messageTrimed[0], PluginConstants.LIVEVIEW_SCREEN_X / 2, 100, littleTextPaint);
+		if (messageTrimed.length == 2) {
+			canvas.drawText(messageTrimed[1], PluginConstants.LIVEVIEW_SCREEN_X / 2, 110,
+			        littleTextPaint);
+		}
 		
 		return background;
 	}
 	
+	/**
+	 * Trim a message in two lines. Each line must have max length <= maxLength
+	 * and second line will contain '...' at the end.
+	 * 
+	 * @param message
+	 * @param maxLength
+	 * @return String array with length = 1 if there message length is <= maxLength
+	 * otherwise String array with length = 2 with each line and last one with '...' chars in the end
+	 */
+	private String[] trimText(String message, int maxLength) {
+		if (message.length() <= maxLength) {
+			
+			return new String[] { message };
+			
+		} else {
+			
+			String message1 = message.substring(0, maxLength);
+			String message2 = message.substring(maxLength, message.length());
+			
+			if (message2.length() > maxLength) {
+				message2 = message2.substring(0, maxLength - 3) + "...";
+			}
+			
+			return new String[] { message1, message2 };
+			
+		}
+	}
 }

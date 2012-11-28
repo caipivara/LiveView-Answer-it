@@ -7,7 +7,7 @@
     <string name="intent_preferences">com.makingiants.answerit.liveview.plugins.PREFERENCES</string>
     <string name="intent_service">com.makingiants.answerit.liveview.plugins.answeritservice</string>
     <string name="application_description">Extends:com.sonyericsson.extras.liveview</string>
-    <string name="conf_enabled_info">Enabled</string>
+    <string name="conf_enabled_info">Activée</string>
     <string name="conf_message_1_info">Message 1</string>
     <string name="conf_message_2_info">Message 2</string>
     <string name="conf_message_3_info">Message 3</string>
@@ -19,15 +19,15 @@
     <string name="conf_message_9_info">Message 9</string>
     <string name="conf_message_10_info">Message 10</string>
     <string name="conf_message_11_info">Message 11</string>
-    <string name="default_message_1">I can not answer, call you later</string>
-    <string name="default_message_2">I’m in a meeting, call you later</string>
-    <string name="default_message_3">I’m driving, call you later</string>
-    <string name="default_message_4">I’m in class, call you later</string>
-    <string name="default_message_5">I’m taking a nap, call you later</string>
-    <string name="default_message_6">I'm getting there, relax!</string>
-    <string name="default_message_7">I’m going to there, relax!</string>
-    <string name="default_message_8">I’m playin, I’ll die if answer! call you later</string>
-    <string name="default_message_9">I’m busy, call you later</string>
+    <string name="default_message_1">Je ne peux pas répondre,  je t´appelle plus tard</string>
+    <string name="default_message_2">Je ne peux pas, je t´appelle plus tard</string>
+    <string name="default_message_3">Je suis à une réunion, Je t´appelle plus tard</string>
+    <string name="default_message_4">Je suis en train de conduire, je t´appelle plus tard</string>
+    <string name="default_message_5">Je suis en classe, Je t´appelle plus tard</string>
+    <string name="default_message_6">Je suis en train de une sieste, je t´appelle plus tard</string>
+    <string name="default_message_7">Je suis en train de arrivant, attendez-moi</string>
+    <string name="default_message_8">En route, attendez-moi</string>
+    <string name="default_message_9">En train de jouer, Je vais mourir si je réponds</string>
     <string name="default_message_10"></string>
     <string name="default_message_11"></string>
 

@@ -57,10 +57,5 @@
         android:key="message_9"
         android:order="10"
         android:title="@string/conf_message_10_info" />
-    <EditTextPreference
-        android:defaultValue="@string/default_message_11"
-        android:key="message_10"
-        android:order="11"
-        android:title="@string/conf_message_11_info" />
 
 </PreferenceScreen>

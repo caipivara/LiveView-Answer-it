@@ -18,7 +18,7 @@
     <string name="conf_message_8_info">Message 8</string>
     <string name="conf_message_9_info">Message 9</string>
     <string name="conf_message_10_info">Message 10</string>
-    <string name="conf_message_11_info">Message 11</string>
+    <string name="plugin_message_no_call_log">0 Calls</string>
     <string name="default_message_1">I can not answer, call you later</string>
     <string name="default_message_2">I’m in a meeting, call you later</string>
     <string name="default_message_3">I’m driving, call you later</string>
@@ -28,7 +28,6 @@
     <string name="default_message_7">I’m going to there, relax!</string>
     <string name="default_message_8">I’m playin, I’ll die if answer! call you later</string>
     <string name="default_message_9">I’m busy, call you later</string>
-    <string name="default_message_10"></string>
-    <string name="default_message_11"></string>
+    <string name="default_message_10">Call you later</string>
 
 </resources>

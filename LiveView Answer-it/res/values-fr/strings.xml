@@ -18,7 +18,7 @@
     <string name="conf_message_8_info">Message 8</string>
     <string name="conf_message_9_info">Message 9</string>
     <string name="conf_message_10_info">Message 10</string>
-    <string name="conf_message_11_info">Message 11</string>
+    <string name="plugin_message_no_call_log">0 Appels</string>
     <string name="default_message_1">Je ne peux pas répondre,  je t´appelle plus tard</string>
     <string name="default_message_2">Je ne peux pas, je t´appelle plus tard</string>
     <string name="default_message_3">Je suis à une réunion, Je t´appelle plus tard</string>
@@ -28,7 +28,6 @@
     <string name="default_message_7">Je suis en train de arrivant, attendez-moi</string>
     <string name="default_message_8">En route, attendez-moi</string>
     <string name="default_message_9">En train de jouer, Je vais mourir si je réponds</string>
-    <string name="default_message_10"></string>
-    <string name="default_message_11"></string>
+    <string name="default_message_10">Je vais mourir si je réponds</string>
 
 </resources>

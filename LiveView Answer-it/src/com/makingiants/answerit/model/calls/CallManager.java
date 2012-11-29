@@ -47,36 +47,52 @@ public class CallManager {
 	
 	/**
 	 * Get the actual call
-	 * @return actual call
+	 * @return actual call if it exist, else return null
 	 */
 	public Call getActualCall() {
-		return calls.get(actualCall);
+		if (calls.size() != 0) {
+			return calls.get(actualCall);
+		} else {
+			return null;
+		}
 	}
 	
 	/**
 	 * Get the next call and update the actual call with it
-	 * @return new call
+	 * @return next call if it exist, else return null
 	 */
 	public Call getNextCall() {
-		
-		if (++actualCall >= calls.size()) {
-			actualCall = 0;
+		if (calls.size() != 0) {
+			if (++actualCall >= calls.size()) {
+				actualCall = 0;
+			}
+			return calls.get(actualCall);
+		} else {
+			return null;
 		}
-		return calls.get(actualCall);
 		
 	}
 	
 	/**
 	 * Get the previous call and update the actual call with it
-	 * @return new call
+	 * @return previous call if it exist, else return null
 	 */
 	public Call getPreviousCall() {
-		
-		if (--actualCall < 0) {
-			actualCall = calls.size() - 1;
+		if (calls.size() != 0) {
+			if (--actualCall < 0) {
+				actualCall = calls.size() - 1;
+			}
+			return calls.get(actualCall);
+		} else {
+			return null;
 		}
-		return calls.get(actualCall);
-		
 	}
 	
+	/**
+	 * Return the number of calls
+	 * @return
+	 */
+	public int getCallsLength() {
+		return calls.size();
+	}
 }

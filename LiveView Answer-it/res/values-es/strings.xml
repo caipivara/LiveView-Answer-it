@@ -18,7 +18,7 @@
     <string name="conf_message_8_info">Mensaje 8</string>
     <string name="conf_message_9_info">Mensaje 9</string>
     <string name="conf_message_10_info">Mensaje 10</string>
-    <string name="conf_message_11_info">Mensaje 11</string>
+    <string name="plugin_message_no_call_log">0 Llamadas</string>
     <string name="default_message_1">No puedo contestar, luego te llamo</string>
     <string name="default_message_2">Estoy en una reunión, luego te llamo</string>
     <string name="default_message_3">Estoy manejando, luego te llamo</string>
@@ -28,7 +28,6 @@
     <string name="default_message_7">Voy en camino, relajate</string>
     <string name="default_message_8">Jugando, ¡Moriré si contesto! luego te llamo </string>
     <string name="default_message_9">Estoy ocupado, luego te llamo</string>
-    <string name="default_message_10"></string>
-    <string name="default_message_11"></string>
+    <string name="default_message_10">Luego te llamo</string>
 
 </resources>

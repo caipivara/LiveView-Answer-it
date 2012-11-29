@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Answer-it</string>
+    <!-- The following strings needs to be defined in order for the Plugin to function. -->
+    <string name="pluginname">Answer-it</string>
+    <string name="intent_preferences">com.makingiants.answerit.liveview.plugins.PREFERENCES</string>
+    <string name="intent_service">com.makingiants.answerit.liveview.plugins.answeritservice</string>
+    <string name="application_description">Extends:com.sonyericsson.extras.liveview</string>
+    <string name="conf_enabled_info">Attivato</string>
+    <string name="conf_message_1_info">Messaggio 1</string>
+    <string name="conf_message_2_info">Messaggio 2</string>
+    <string name="conf_message_3_info">Messaggio 3</string>
+    <string name="conf_message_4_info">Messaggio 4</string>
+    <string name="conf_message_5_info">Messaggio 5</string>
+    <string name="conf_message_6_info">Messaggio 6</string>
+    <string name="conf_message_7_info">Messaggio 7</string>
+    <string name="conf_message_8_info">Messaggio 8</string>
+    <string name="conf_message_9_info">Messaggio 9</string>
+    <string name="conf_message_10_info">Messaggio 10</string>
+    <string name="plugin_message_no_call_log">0 Chiamate</string>
+    <string name="default_message_1">Non posso rispondere, ti chiamo a più tardi</string>
+    <string name="default_message_2">Sono in una reunione, ti chiamo a più tardi</string>
+    <string name="default_message_3">Sto guidadno la macchina, ti chiamo a più tardi</string>
+    <string name="default_message_4">Sono a lezione, ti chiamo a più tardi</string>
+    <string name="default_message_5">Sono dormito, ti chiamo a più tardi</string>
+    <string name="default_message_6">Sto arrivando, tranquillo!</string>
+    <string name="default_message_7">Arrivo lá.</string>
+    <string name="default_message_8">Sto gioccando, se rispondo sicuro perdo.</string>
+    <string name="default_message_9">Sono occupato, ti chiamo a più tardi</string>
+    <string name="default_message_10">Ti chiamo a più tardi</string>
+
+</resources>

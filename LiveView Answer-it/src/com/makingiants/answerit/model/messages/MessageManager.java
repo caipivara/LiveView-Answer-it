@@ -44,40 +44,52 @@ public class MessageManager {
 	 * @return
 	 */
 	public String getActualMessage() {
-		return messages[actualMessage];
+		if (messages.length != 0) {
+			return messages[actualMessage];
+		} else {
+			return null;
+		}
 	}
 	
 	/**
 	 * Get the next message and update the actual message with it
 	 */
 	public String getNextMessage() {
-		String message = null;
-		
-		do {
-			if (++actualMessage >= messages.length) {
-				actualMessage = 0;
-			}
-			message = messages[actualMessage];
+		if (messages.length != 0) {
+			String message = null;
 			
-		} while (message == null || message.equals(""));
-		
-		return messages[actualMessage];
+			do {
+				if (++actualMessage >= messages.length) {
+					actualMessage = 0;
+				}
+				message = messages[actualMessage];
+				
+			} while (message == null || message.equals(""));
+			
+			return messages[actualMessage];
+		} else {
+			return null;
+		}
 	}
 	
 	/**
 	 * Get the previous message and update the actual message with it
 	 */
 	public String getPreviousMessage() {
-		String message = null;
-		do {
-			if (--actualMessage < 0) {
-				actualMessage = messages.length - 1;
-			}
-			message = messages[actualMessage];
+		if (messages.length != 0) {
+			String message = null;
+			do {
+				if (--actualMessage < 0) {
+					actualMessage = messages.length - 1;
+				}
+				message = messages[actualMessage];
+				
+			} while (message == null || message.equals(""));
 			
-		} while (message == null || message.equals(""));
-		
-		return messages[actualMessage];
+			return messages[actualMessage];
+		} else {
+			return null;
+		}
 	}
 	
 }

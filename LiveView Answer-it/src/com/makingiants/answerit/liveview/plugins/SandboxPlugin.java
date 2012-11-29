@@ -34,6 +34,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.IBinder;
+import android.telephony.SmsManager;
 
 import com.makingiants.answerit.R;
 import com.makingiants.answerit.model.calls.Call;
@@ -48,7 +49,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	/**
 	 * How many messages are in preferences
 	 */
-	private final static int NUMBER_OF_MESSAGES = 11;
+	private static int numberOfMessages;
 	
 	// ****************************************************************
 	// Attributes
@@ -114,7 +115,8 @@ public class SandboxPlugin extends AbstractPluginService {
 		}
 		
 		if (messageManager == null) {
-			messageManager = new MessageManager(this, NUMBER_OF_MESSAGES);
+			numberOfMessages = getResources().getInteger(R.integer.number_default_messages);
+			messageManager = new MessageManager(this, numberOfMessages);
 		}
 		
 		if (callManager == null) {
@@ -161,13 +163,21 @@ public class SandboxPlugin extends AbstractPluginService {
 			handler.postDelayed(new Runnable() {
 				
 				public void run() {
-					final Call call = callManager.getActualCall();
-					final String message = messageManager.getActualMessage();
-					
-					//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
-					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-					        getBackgroundBitmapWithCall(call, message));
+					if (callManager.getCallsLength() != 0) {
+						Call call = callManager.getActualCall();
+						final String message = messageManager.getActualMessage();
+						
+						//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
+						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+						        getBackgroundBitmapWithCall(call, message));
+						
+					} else {
+						PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId,
+						        getString(R.string.plugin_message_no_call_log),
+						        PluginConstants.LIVEVIEW_SCREEN_X, 15);
+					}
 				}
+				
 			}, 1000);
 		}
 		
@@ -249,69 +259,97 @@ public class SandboxPlugin extends AbstractPluginService {
 	 */
 	protected void button(String buttonType, boolean doublepress, boolean longpress) {
 		
-		if (!showingSendImage) {
-			if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_UP)) {
-				
-				final Call call = callManager.getPreviousCall();
-				String message = messageManager.getActualMessage();
-				
-				//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
-				PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-				        getBackgroundBitmapWithCall(call, message));
-				
-			} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_DOWN)) {
-				
-				final Call call = callManager.getNextCall();
-				String message = messageManager.getActualMessage();
-				//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
-				PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-				        getBackgroundBitmapWithCall(call, message));
-				
-			} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_LEFT)) {
-				final Call call = callManager.getActualCall();
-				String message = messageManager.getPreviousMessage();
-				//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
-				PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-				        getBackgroundBitmapWithCall(call, message));
-				
-			} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_RIGHT)) {
-				final Call call = callManager.getActualCall();
-				String message = messageManager.getNextMessage();
-				//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
-				PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-				        getBackgroundBitmapWithCall(call, message));
-				
-			} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_SELECT)) {
-				
-				if (!showingSendImage) {
-					showingSendImage = true;
+		if (callManager.getCallsLength() != 0) {
+			if (!showingSendImage) {
+				if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_UP)) {
 					
-					// Show send image
-					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId, bitmapSend);
+					Call call = callManager.getPreviousCall();
+					String message = messageManager.getActualMessage();
 					
-					mLiveViewAdapter.vibrateControl(mPluginId, 0, 200);
+					if (call == null) {
+						call = new Call("---", "");
+					}
 					
-					// Send message
-					/*SmsManager shortMessageManager = SmsManager.getDefault();
+					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+					        getBackgroundBitmapWithCall(call, message));
 					
-					shortMessageManager.sendTextMessage(callManager.getActualCall().getNumber(), null,
-					        messageManager.getActualMessage(), null, null);
-					*/
-					// Set the schedule to allow sending again and show send image for a while
-					handler.postDelayed(new Runnable() {
+				} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_DOWN)) {
+					
+					Call call = callManager.getNextCall();
+					String message = messageManager.getActualMessage();
+					
+					if (call == null) {
+						call = new Call("Empty calls log", "");
+					}
+					
+					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+					        getBackgroundBitmapWithCall(call, message));
+					
+				} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_LEFT)) {
+					
+					Call call = callManager.getActualCall();
+					String message = messageManager.getPreviousMessage();
+					
+					if (call == null) {
+						call = new Call("Empty calls log", "");
+					}
+					
+					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+					        getBackgroundBitmapWithCall(call, message));
+					
+				} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_RIGHT)) {
+					
+					Call call = callManager.getActualCall();
+					String message = messageManager.getNextMessage();
+					
+					if (call == null) {
+						call = new Call("Empty calls log", "");
+					}
+					
+					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+					        getBackgroundBitmapWithCall(call, message));
+					
+				} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_SELECT)) {
+					
+					if (!showingSendImage) {
+						showingSendImage = true;
 						
-						public void run() {
-							final Call call = callManager.getActualCall();
-							final String message = messageManager.getActualMessage();
+						// Show send image
+						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId, bitmapSend);
+						
+						mLiveViewAdapter.vibrateControl(mPluginId, 0, 200);
+						
+						// Send message
+						Call call = callManager.getActualCall();
+						if (call != null) {
+							SmsManager shortMessageManager = SmsManager.getDefault();
 							
-							PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-							        getBackgroundBitmapWithCall(call, message));
+							shortMessageManager.sendTextMessage(call.getNumber(), null,
+							        messageManager.getActualMessage(), null, null);
 							
-							showingSendImage = false;
+							// Set the schedule to allow sending again and show send image for a while
+							handler.postDelayed(new Runnable() {
+								
+								public void run() {
+									final Call call = callManager.getActualCall();
+									final String message = messageManager.getActualMessage();
+									
+									PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+									        getBackgroundBitmapWithCall(call, message));
+									
+									showingSendImage = false;
+								}
+							}, 1000);
 						}
-					}, 1000);
+					}
 				}
 			}
+		} else {
+			
+			PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId,
+			        getString(R.string.plugin_message_no_call_log), PluginConstants.LIVEVIEW_SCREEN_X,
+			        15);
+			
 		}
 		
 	}

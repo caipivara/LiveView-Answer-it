@@ -165,7 +165,7 @@ public class SandboxPlugin extends AbstractPluginService {
 				public void run() {
 					if (callManager.getCallsLength() != 0) {
 						Call call = callManager.getActualCall();
-						final String message = messageManager.getActualMessage();
+						String message = messageManager.getActualMessage();
 						
 						if (message == null) {
 							message = getString(R.string.plugin_message_no_messages);

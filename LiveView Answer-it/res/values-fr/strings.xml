@@ -19,6 +19,7 @@
     <string name="conf_message_9_info">Message 9</string>
     <string name="conf_message_10_info">Message 10</string>
     <string name="plugin_message_no_call_log">0 Appels</string>
+    <string name="plugin_message_no_messages">0 Messages</string>
     <string name="default_message_1">Je ne peux pas répondre,  je t´appelle plus tard</string>
     <string name="default_message_2">Je ne peux pas, je t´appelle plus tard</string>
     <string name="default_message_3">Je suis à une réunion, Je t´appelle plus tard</string>

@@ -22,7 +22,7 @@ public class MessagesDAO {
 		
 		// Key for prefs are "message_0" "message_1"
 		for (int i = 0; i < numberOfMessages; i++) {
-			messages[i] = prefs.getString("message_" + i, "");
+			messages[i] = prefs.getString("message_" + i, "").trim();
 		}
 		
 		return messages;

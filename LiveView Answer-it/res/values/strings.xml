@@ -19,6 +19,7 @@
     <string name="conf_message_9_info">Message 9</string>
     <string name="conf_message_10_info">Message 10</string>
     <string name="plugin_message_no_call_log">0 Calls</string>
+    <string name="plugin_message_no_messages">0 Messages</string>
     <string name="default_message_1">I can not answer, call you later</string>
     <string name="default_message_2">I’m in a meeting, call you later</string>
     <string name="default_message_3">I’m driving, call you later</string>

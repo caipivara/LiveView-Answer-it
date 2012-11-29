@@ -19,6 +19,7 @@
     <string name="conf_message_9_info">Mensaje 9</string>
     <string name="conf_message_10_info">Mensaje 10</string>
     <string name="plugin_message_no_call_log">0 Llamadas</string>
+    <string name="plugin_message_no_messages">0 Mensajes</string>
     <string name="default_message_1">No puedo contestar, luego te llamo</string>
     <string name="default_message_2">Estoy en una reunión, luego te llamo</string>
     <string name="default_message_3">Estoy manejando, luego te llamo</string>

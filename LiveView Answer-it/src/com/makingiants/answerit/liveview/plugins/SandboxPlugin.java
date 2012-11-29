@@ -167,6 +167,10 @@ public class SandboxPlugin extends AbstractPluginService {
 						Call call = callManager.getActualCall();
 						final String message = messageManager.getActualMessage();
 						
+						if (message == null) {
+							message = getString(R.string.plugin_message_no_messages);
+						}
+						
 						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 						        getBackgroundBitmapWithCall(call, message));
 						
@@ -266,6 +270,10 @@ public class SandboxPlugin extends AbstractPluginService {
 					Call call = callManager.getPreviousCall();
 					String message = messageManager.getActualMessage();
 					
+					if (message == null) {
+						message = getString(R.string.plugin_message_no_messages);
+					}
+					
 					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 					        getBackgroundBitmapWithCall(call, message));
 					
@@ -273,6 +281,10 @@ public class SandboxPlugin extends AbstractPluginService {
 					
 					Call call = callManager.getNextCall();
 					String message = messageManager.getActualMessage();
+					
+					if (message == null) {
+						message = getString(R.string.plugin_message_no_messages);
+					}
 					
 					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 					        getBackgroundBitmapWithCall(call, message));
@@ -282,6 +294,10 @@ public class SandboxPlugin extends AbstractPluginService {
 					Call call = callManager.getActualCall();
 					String message = messageManager.getPreviousMessage();
 					
+					if (message == null) {
+						message = getString(R.string.plugin_message_no_messages);
+					}
+					
 					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 					        getBackgroundBitmapWithCall(call, message));
 					
@@ -289,6 +305,10 @@ public class SandboxPlugin extends AbstractPluginService {
 					
 					Call call = callManager.getActualCall();
 					String message = messageManager.getNextMessage();
+					
+					if (message == null) {
+						message = getString(R.string.plugin_message_no_messages);
+					}
 					
 					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 					        getBackgroundBitmapWithCall(call, message));
@@ -305,26 +325,28 @@ public class SandboxPlugin extends AbstractPluginService {
 						
 						// Send message
 						Call call = callManager.getActualCall();
+						String message = messageManager.getActualMessage();
 						
-						SmsManager shortMessageManager = SmsManager.getDefault();
-						
-						shortMessageManager.sendTextMessage(call.getNumber(), null,
-						        messageManager.getActualMessage(), null, null);
-						
-						// Set the schedule to allow sending again and show send image for a while
-						handler.postDelayed(new Runnable() {
+						if (call != null && message != null) {
+							SmsManager shortMessageManager = SmsManager.getDefault();
 							
-							public void run() {
-								final Call call = callManager.getActualCall();
-								final String message = messageManager.getActualMessage();
+							shortMessageManager.sendTextMessage(call.getNumber(), null, message, null,
+							        null);
+							
+							// Set the schedule to allow sending again and show send image for a while
+							handler.postDelayed(new Runnable() {
 								
-								PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-								        getBackgroundBitmapWithCall(call, message));
-								
-								showingSendImage = false;
-							}
-						}, 1000);
-						
+								public void run() {
+									final Call call = callManager.getActualCall();
+									final String message = messageManager.getActualMessage();
+									
+									PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+									        getBackgroundBitmapWithCall(call, message));
+									
+									showingSendImage = false;
+								}
+							}, 1000);
+						}
 					}
 				}
 			}

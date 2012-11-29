@@ -167,11 +167,11 @@ public class SandboxPlugin extends AbstractPluginService {
 						Call call = callManager.getActualCall();
 						final String message = messageManager.getActualMessage();
 						
-						//PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId, text, bitmapSizeX, fontSize);
 						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 						        getBackgroundBitmapWithCall(call, message));
 						
 					} else {
+						// Show no calls message
 						PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId,
 						        getString(R.string.plugin_message_no_call_log),
 						        PluginConstants.LIVEVIEW_SCREEN_X, 15);
@@ -266,10 +266,6 @@ public class SandboxPlugin extends AbstractPluginService {
 					Call call = callManager.getPreviousCall();
 					String message = messageManager.getActualMessage();
 					
-					if (call == null) {
-						call = new Call("---", "");
-					}
-					
 					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 					        getBackgroundBitmapWithCall(call, message));
 					
@@ -277,10 +273,6 @@ public class SandboxPlugin extends AbstractPluginService {
 					
 					Call call = callManager.getNextCall();
 					String message = messageManager.getActualMessage();
-					
-					if (call == null) {
-						call = new Call("Empty calls log", "");
-					}
 					
 					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 					        getBackgroundBitmapWithCall(call, message));
@@ -290,10 +282,6 @@ public class SandboxPlugin extends AbstractPluginService {
 					Call call = callManager.getActualCall();
 					String message = messageManager.getPreviousMessage();
 					
-					if (call == null) {
-						call = new Call("Empty calls log", "");
-					}
-					
 					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 					        getBackgroundBitmapWithCall(call, message));
 					
@@ -301,10 +289,6 @@ public class SandboxPlugin extends AbstractPluginService {
 					
 					Call call = callManager.getActualCall();
 					String message = messageManager.getNextMessage();
-					
-					if (call == null) {
-						call = new Call("Empty calls log", "");
-					}
 					
 					PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
 					        getBackgroundBitmapWithCall(call, message));
@@ -321,31 +305,31 @@ public class SandboxPlugin extends AbstractPluginService {
 						
 						// Send message
 						Call call = callManager.getActualCall();
-						if (call != null) {
-							SmsManager shortMessageManager = SmsManager.getDefault();
+						
+						SmsManager shortMessageManager = SmsManager.getDefault();
+						
+						shortMessageManager.sendTextMessage(call.getNumber(), null,
+						        messageManager.getActualMessage(), null, null);
+						
+						// Set the schedule to allow sending again and show send image for a while
+						handler.postDelayed(new Runnable() {
 							
-							shortMessageManager.sendTextMessage(call.getNumber(), null,
-							        messageManager.getActualMessage(), null, null);
-							
-							// Set the schedule to allow sending again and show send image for a while
-							handler.postDelayed(new Runnable() {
+							public void run() {
+								final Call call = callManager.getActualCall();
+								final String message = messageManager.getActualMessage();
 								
-								public void run() {
-									final Call call = callManager.getActualCall();
-									final String message = messageManager.getActualMessage();
-									
-									PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-									        getBackgroundBitmapWithCall(call, message));
-									
-									showingSendImage = false;
-								}
-							}, 1000);
-						}
+								PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
+								        getBackgroundBitmapWithCall(call, message));
+								
+								showingSendImage = false;
+							}
+						}, 1000);
+						
 					}
 				}
 			}
 		} else {
-			
+			// Show no calls message
 			PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId,
 			        getString(R.string.plugin_message_no_call_log), PluginConstants.LIVEVIEW_SCREEN_X,
 			        15);

@@ -36,10 +36,14 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.SmsManager;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GAServiceManager;
+import com.google.analytics.tracking.android.Tracker;
 import com.makingiants.answerit.R;
 import com.makingiants.answerit.model.calls.Call;
 import com.makingiants.answerit.model.calls.CallManager;
 import com.makingiants.answerit.model.messages.MessageManager;
+import com.rRhoDEGBMf.gpIpiBntrE126271.Airpush;
 import com.sonyericsson.extras.liveview.plugins.AbstractPluginService;
 import com.sonyericsson.extras.liveview.plugins.PluginConstants;
 import com.sonyericsson.extras.liveview.plugins.PluginUtils;
@@ -72,60 +76,75 @@ public class SandboxPlugin extends AbstractPluginService {
 	// Paint used for text
 	private Paint bigTextPaint, littleTextPaint;
 	
+	// Ads attribute
+	private Airpush airpush;
+	
+	// Google Analitics tracker
+	private Tracker myExistingTracker;
+	
+	private boolean notStarted = true;
+	
 	// ****************************************************************
 	// Service Overrides
 	// ****************************************************************
 	
 	@Override
-	public void onStart(Intent intent, int startId) {
+	public void onStart(final Intent intent, final int startId) {
 		super.onStart(intent, startId);
 		
-		if (bitmapBackground == null) {
+		if (notStarted) {
+			
+			// Init main handler
+			handler = new Handler();
+			
+			// Init google analitics
+			EasyTracker.getInstance().setContext(getApplicationContext());
+			myExistingTracker = EasyTracker.getTracker();
+			
+			GAServiceManager.getInstance().setDispatchPeriod(1);
+			
+			// Init backgrounds
 			bitmapBackground = BitmapFactory.decodeStream(this.getResources().openRawResource(
 			        R.drawable.background));
-		}
-		
-		if (bitmapSend == null) {
+			
 			bitmapSend = BitmapFactory.decodeStream(this.getResources().openRawResource(
 			        R.drawable.background_sent));
-		}
-		
-		if (handler == null) {
-			handler = new Handler();
-		}
-		
-		if (bigTextPaint == null) {
+			
+			// Init paints
 			bigTextPaint = new Paint();
 			bigTextPaint.setColor(Color.WHITE);
 			bigTextPaint.setTextSize(15); // Text Size
 			bigTextPaint.setTypeface(Typeface.SANS_SERIF);
-			//bigTextPaint.setShadowLayer(5.0f, 0.0f, 0.0f, Color.WHITE);
 			bigTextPaint.setAntiAlias(true);
 			bigTextPaint.setTextAlign(Paint.Align.CENTER);
-		}
-		
-		if (littleTextPaint == null) {
+			
 			littleTextPaint = new Paint();
 			littleTextPaint.setColor(Color.WHITE);
 			littleTextPaint.setTextSize(11); // Text Size
 			littleTextPaint.setTypeface(Typeface.SANS_SERIF);
-			//littleTextPaint.setShadowLayer(5.0f, 0.0f, 0.0f, Color.WHITE);
 			littleTextPaint.setAntiAlias(true);
 			littleTextPaint.setTextAlign(Paint.Align.CENTER);
-		}
-		
-		if (messageManager == null) {
+			
+			// Init airpush ads
+			airpush = new Airpush(getApplicationContext());
+			//Airpush.enableSDK(getApplicationContext(), true);
+			airpush.startSmartWallAd(); //launch smart wall on App start
+			airpush.startPushNotification(false);
+			
+			// Init Messages values
 			numberOfMessages = getResources().getInteger(R.integer.number_default_messages);
 			messageManager = new MessageManager(this, numberOfMessages);
-		}
-		
-		if (callManager == null) {
+			
 			callManager = new CallManager(this.getApplicationContext());
+			
 		} else {
+			
 			callManager.updateCalls(this.getApplicationContext());
 		}
 		
+		notStarted = false;
 		showingSendImage = false;
+		
 	}
 	
 	@Override
@@ -160,11 +179,14 @@ public class SandboxPlugin extends AbstractPluginService {
 		
 		// Check if plugin is enabled.
 		if (mSharedPreferences.getBoolean(PluginConstants.PREFERENCES_PLUGIN_ENABLED, false)) {
+			// Track plugin started
+			myExistingTracker.trackView(getString(R.string.app_name));
+			
 			handler.postDelayed(new Runnable() {
 				
 				public void run() {
 					if (callManager.getCallsLength() != 0) {
-						Call call = callManager.getActualCall();
+						final Call call = callManager.getActualCall();
 						String message = messageManager.getActualMessage();
 						
 						if (message == null) {
@@ -202,7 +224,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * If needed, do additional actions here, e.g. 
 	 * starting any worker that is needed.
 	 */
-	protected void onServiceConnectedExtended(ComponentName className, IBinder service) {
+	protected void onServiceConnectedExtended(final ComponentName className, final IBinder service) {
 		
 	}
 	
@@ -213,7 +235,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * 
 	 * Do any additional actions here.
 	 */
-	protected void onServiceDisconnectedExtended(ComponentName className) {
+	protected void onServiceDisconnectedExtended(final ComponentName className) {
 		
 	}
 	
@@ -224,14 +246,18 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * 
 	 * The shared preferences has been changed. Take actions needed. 
 	 */
-	protected void onSharedPreferenceChangedExtended(SharedPreferences prefs, String key) {
+	protected void onSharedPreferenceChangedExtended(final SharedPreferences prefs, final String key) {
 		if (!key.equals("pluginEnabled")) {
-			String message = prefs.getString(key, "");
+			final String message = prefs.getString(key, "");
 			
 			// Message key values are: message_#
-			int messageNumber = Integer.parseInt(key.substring(key.length() - 1));
+			final int messageNumber = Integer.parseInt(key.substring(key.length() - 1));
 			
 			messageManager.addMessage(messageNumber, message);
+			
+			// track its
+			myExistingTracker.trackEvent("ui_action", "button_press", "message_changed", 0l);
+			
 		}
 	}
 	
@@ -261,13 +287,13 @@ public class SandboxPlugin extends AbstractPluginService {
 	/**
 	 * Sandbox mode only. When a user presses any buttons on the LiveView device, this method will be called.
 	 */
-	protected void button(String buttonType, boolean doublepress, boolean longpress) {
+	protected void button(final String buttonType, final boolean doublepress, final boolean longpress) {
 		
 		if (callManager.getCallsLength() != 0) {
 			if (!showingSendImage) {
 				if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_UP)) {
 					
-					Call call = callManager.getPreviousCall();
+					final Call call = callManager.getPreviousCall();
 					String message = messageManager.getActualMessage();
 					
 					if (message == null) {
@@ -279,7 +305,7 @@ public class SandboxPlugin extends AbstractPluginService {
 					
 				} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_DOWN)) {
 					
-					Call call = callManager.getNextCall();
+					final Call call = callManager.getNextCall();
 					String message = messageManager.getActualMessage();
 					
 					if (message == null) {
@@ -291,7 +317,7 @@ public class SandboxPlugin extends AbstractPluginService {
 					
 				} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_LEFT)) {
 					
-					Call call = callManager.getActualCall();
+					final Call call = callManager.getActualCall();
 					String message = messageManager.getPreviousMessage();
 					
 					if (message == null) {
@@ -303,7 +329,7 @@ public class SandboxPlugin extends AbstractPluginService {
 					
 				} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_RIGHT)) {
 					
-					Call call = callManager.getActualCall();
+					final Call call = callManager.getActualCall();
 					String message = messageManager.getNextMessage();
 					
 					if (message == null) {
@@ -324,11 +350,15 @@ public class SandboxPlugin extends AbstractPluginService {
 						mLiveViewAdapter.vibrateControl(mPluginId, 0, 200);
 						
 						// Send message
-						Call call = callManager.getActualCall();
-						String message = messageManager.getActualMessage();
+						final Call call = callManager.getActualCall();
+						final String message = messageManager.getActualMessage();
+						
+						// Track how many messages sends
+						myExistingTracker
+						        .trackEvent("ui_action", "button_press", "message_sended", 0l);
 						
 						if (call != null && message != null) {
-							SmsManager shortMessageManager = SmsManager.getDefault();
+							final SmsManager shortMessageManager = SmsManager.getDefault();
 							
 							shortMessageManager.sendTextMessage(call.getNumber(), null, message, null,
 							        null);
@@ -363,7 +393,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	/**
 	 * Called by the LiveView application to indicate the capabilites of the LiveView device.
 	 */
-	protected void displayCaps(int displayWidthPx, int displayHeigthPx) {
+	protected void displayCaps(final int displayWidthPx, final int displayHeigthPx) {
 		// // Log.d(PluginConstants.LOG_TAG, "displayCaps - width " + displayWidthPx + ", height "
 		//       + displayHeigthPx);
 	}
@@ -380,7 +410,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * When a user presses the "open in phone" button on the LiveView device, this method is called.
 	 * You could e.g. open a browser and go to a specific URL, or open the music player.
 	 */
-	protected void openInPhone(String openInPhoneAction) {
+	protected void openInPhone(final String openInPhoneAction) {
 		// // Log.d(PluginConstants.LOG_TAG, "openInPhone: " + openInPhoneAction);
 	}
 	
@@ -388,22 +418,22 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * Sandbox mode only. Called by the LiveView application when the screen mode has changed.
 	 * 0 = screen is off, 1 = screen is on
 	 */
-	protected void screenMode(int mode) {
+	protected void screenMode(final int mode) {
 	}
 	
 	// ****************************************************************
 	// GUI Changes
 	// ****************************************************************
 	
-	private Bitmap getBackgroundBitmapWithCall(final Call call, String message) {
+	private Bitmap getBackgroundBitmapWithCall(final Call call, final String message) {
 		
 		final Bitmap background = bitmapBackground.copy(Bitmap.Config.RGB_565, true);
 		
 		final Canvas canvas = new Canvas(background);
 		
 		// Draw the name and number
-		String number = call.getNumber();
-		String[] name = trimText(call.getName(), 14);
+		final String number = call.getNumber();
+		final String[] name = trimText(call.getName(), 14);
 		if (name.length == 2) {
 			
 			canvas.drawText(name[0], PluginConstants.LIVEVIEW_SCREEN_X / 2, 35, bigTextPaint);
@@ -418,7 +448,7 @@ public class SandboxPlugin extends AbstractPluginService {
 			
 		}
 		// Draw message
-		String[] messageTrimed = trimText(message, 18);
+		final String[] messageTrimed = trimText(message, 18);
 		canvas.drawText(messageTrimed[0], PluginConstants.LIVEVIEW_SCREEN_X / 2, 100, littleTextPaint);
 		if (messageTrimed.length == 2) {
 			canvas.drawText(messageTrimed[1], PluginConstants.LIVEVIEW_SCREEN_X / 2, 110,
@@ -437,14 +467,14 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * @return String array with length = 1 if there message length is <= maxLength
 	 * otherwise String array with length = 2 with each line and last one with '...' chars in the end
 	 */
-	private String[] trimText(String message, int maxLength) {
+	private String[] trimText(final String message, final int maxLength) {
 		if (message.length() <= maxLength) {
 			
 			return new String[] { message };
 			
 		} else {
 			
-			String message1 = message.substring(0, maxLength);
+			final String message1 = message.substring(0, maxLength);
 			String message2 = message.substring(maxLength, message.length());
 			
 			if (message2.length() > maxLength) {

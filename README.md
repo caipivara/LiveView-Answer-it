@@ -22,11 +22,6 @@ Developed using Eclipse and Android Plugin
 * [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 
-## Acknowledgements
-
-* [SoundBible](http://soundbible.com/) for some great sound effects
-
-
 ## Contributing
 
 Please fork this repository and contribute back using pull requests.

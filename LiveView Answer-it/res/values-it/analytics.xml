@@ -4,13 +4,6 @@
     <!-- Replace placeholder ID with your tracking ID -->
     <string name="ga_trackingId">UA-36813115-1</string>
 
-    <bool name="ga_debug">true</bool>
-
-    <!-- Enable Activity tracking -->
-    <bool name="ga_autoActivityTracking">true</bool>
-
-    <integer name="ga_dispatchPeriod">1</integer>
-
     <!-- Enable automatic exception tracking -->
     <bool name="ga_reportUncaughtExceptions">true</bool>
 

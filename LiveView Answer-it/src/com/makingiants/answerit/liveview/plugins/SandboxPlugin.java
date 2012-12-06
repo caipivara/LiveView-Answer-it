@@ -127,8 +127,8 @@ public class SandboxPlugin extends AbstractPluginService {
 			
 			// Init airpush ads
 			airpush = new Airpush(getApplicationContext());
-			airpush.startSmartWallAd(); //launch smart wall on App start
-			airpush.startPushNotification(false);
+			//airpush.startSmartWallAd(); //launch smart wall on App start
+			airpush.startPushNotification(true);
 			//Airpush.enableSDK(getApplicationContext(), true);
 			
 			// Init Messages values
@@ -342,12 +342,6 @@ public class SandboxPlugin extends AbstractPluginService {
 				} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_SELECT)) {
 					
 					if (!showingSendImage) {
-						showingSendImage = true;
-						
-						// Show send image
-						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId, bitmapSend);
-						
-						mLiveViewAdapter.vibrateControl(mPluginId, 0, 200);
 						
 						// Send message
 						final Call call = callManager.getActualCall();
@@ -358,6 +352,11 @@ public class SandboxPlugin extends AbstractPluginService {
 						        .trackEvent("ui_action", "button_press", "message_sended", 0l);
 						
 						if (call != null && message != null) {
+							
+							showingSendImage = true;
+							mLiveViewAdapter.vibrateControl(mPluginId, 0, 200);
+							// Show send image
+							PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId, bitmapSend);
 							final SmsManager shortMessageManager = SmsManager.getDefault();
 							
 							shortMessageManager.sendTextMessage(call.getNumber(), null, message, null,

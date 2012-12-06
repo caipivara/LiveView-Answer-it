@@ -1,7 +1,7 @@
 # LiveView Answer-it Plugin [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.makingiants.answerit)
 
 <a href="https://play.google.com/store/apps/details?id=com.makingiants.answerit" alt="Download from Google Play">
-	<img src="http://dc191.4shared.com/img/2bdd7tZq/0.9464386006044059/answer_it_banner.PNG">
+	<img src="http://dc201.4shared.com/img/2bdd7tZq/0.581460289159118/Copy_of_answer_it_banner.PNG">
 </a>
 
 This is a plugin for the LiveView device

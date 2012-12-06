@@ -37,7 +37,6 @@ import android.os.IBinder;
 import android.telephony.SmsManager;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.GAServiceManager;
 import com.google.analytics.tracking.android.Tracker;
 import com.makingiants.answerit.R;
 import com.makingiants.answerit.model.calls.Call;
@@ -100,8 +99,6 @@ public class SandboxPlugin extends AbstractPluginService {
 			// Init google analitics
 			EasyTracker.getInstance().setContext(getApplicationContext());
 			myExistingTracker = EasyTracker.getTracker();
-			
-			GAServiceManager.getInstance().setDispatchPeriod(1);
 			
 			// Init backgrounds
 			bitmapBackground = BitmapFactory.decodeStream(this.getResources().openRawResource(

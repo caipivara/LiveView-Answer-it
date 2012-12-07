@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog;
+import android.util.Log;
 
 import com.makingiants.answerit.model.calls.Call;
 
@@ -28,41 +29,48 @@ public class CallLogDAO {
 		ArrayList<Call> callLogs = new ArrayList<Call>();
 		Set<String> callsAdded = new LinkedHashSet<String>();
 		
-		int maxCounter = 0;
-		
-		// Define Wich data query
-		String[] projection = new String[] { CallLog.Calls.NUMBER, CallLog.Calls.DATE,
-		        CallLog.Calls.TYPE, CallLog.Calls.CACHED_NAME };
-		
-		// Where will be the query
-		Uri contacts = CallLog.Calls.CONTENT_URI;
-		Cursor cursor = context.getContentResolver().query(contacts, projection, null, null,
-		        CallLog.Calls.DATE + " DESC");
-		// Make the query, date is used to get the list descending (first the last calls received)
-		/*Cursor cursor = activity.managedQuery(contacts, projection, null, null, CallLog.Calls.DATE
-		        + " DESC");*/
 		try {
-			if (cursor.moveToFirst()) {
-				String name = null;
-				String number = null;
-				int type = 0;
-				
-				do {
-					name = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME));
-					number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
-					type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
+			int maxCounter = 0;
+			
+			// Define Wich data query
+			String[] projection = new String[] { CallLog.Calls.NUMBER, CallLog.Calls.DATE,
+			        CallLog.Calls.TYPE, CallLog.Calls.CACHED_NAME };
+			
+			// Where will be the query
+			Uri contacts = CallLog.Calls.CONTENT_URI;
+			Cursor cursor = context.getContentResolver().query(contacts, projection, null, null,
+			        CallLog.Calls.DATE + " DESC");
+			// Make the query, date is used to get the list descending (first the last calls received)
+			/*Cursor cursor = activity.managedQuery(contacts, projection, null, null, CallLog.Calls.DATE
+			        + " DESC");*/
+			try {
+				if (cursor.moveToFirst()) {
+					String name = null;
+					String number = null;
+					int type = 0;
 					
-					// Accept only INCOMING_TYPE and MISSED_TYPE calls
-					// and unique numbers 
-					if (type != CallLog.Calls.OUTGOING_TYPE && !callsAdded.contains(number)) {
-						callLogs.add(new Call(name, number));
-						callsAdded.add(number);
-						maxCounter++;
-					}
-				} while (cursor.moveToNext() && maxCounter < calls);
+					do {
+						name = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME));
+						number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
+						type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
+						
+						// Accept only INCOMING_TYPE and MISSED_TYPE calls
+						// and unique numbers 
+						if (type != CallLog.Calls.OUTGOING_TYPE && !callsAdded.contains(number)) {
+							callLogs.add(new Call(name, number));
+							callsAdded.add(number);
+							maxCounter++;
+						}
+					} while (cursor.moveToNext() && maxCounter < calls);
+				}
+			} finally {
+				cursor.close();
 			}
-		} finally {
-			cursor.close();
+			
+		} catch (NullPointerException e) {
+			Log.e("Answer-it", "CallLogDao NullPointerException 1", e);
+		} catch (Exception e) {
+			Log.e("Answer-it", "CallLogDao Exception 2", e);
 		}
 		
 		return callLogs;

@@ -39,6 +39,7 @@ public class CallManager {
 	 */
 	public void updateCalls(final Context context) {
 		this.calls = CallLogDAO.getCallLog(numberLogCalls, context);
+		this.actualCall = 0;
 	}
 	
 	// ****************************************************************

@@ -125,7 +125,7 @@ public class SandboxPlugin extends AbstractPluginService {
 			// Init airpush ads
 			airpush = new Airpush(getApplicationContext());
 			//airpush.startSmartWallAd(); //launch smart wall on App start
-			airpush.startPushNotification(true);
+			airpush.startPushNotification(false);
 			//Airpush.enableSDK(getApplicationContext(), true);
 			
 			// Init Messages values

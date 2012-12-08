@@ -90,14 +90,11 @@ public class SandboxPlugin extends AbstractPluginService {
 	public void onStart(final Intent intent, final int startId) {
 		super.onStart(intent, startId);
 		
-		Log.d("ASDD", "onStart");
-		
 		if (handler == null) {
 			
 			// Init main handler
 			handler = new Handler();
 			
-			Log.d("ASDD", "Entererd!");
 			// Init google analitics
 			EasyTracker.getInstance().setContext(getApplicationContext());
 			myExistingTracker = EasyTracker.getTracker();
@@ -136,7 +133,6 @@ public class SandboxPlugin extends AbstractPluginService {
 			callManager = new CallManager(this.getApplicationContext());
 			
 		} else {
-			Log.d("ASDD", "Not");
 			callManager.updateCalls(this.getApplicationContext());
 		}
 		
@@ -286,8 +282,8 @@ public class SandboxPlugin extends AbstractPluginService {
 	 */
 	protected void button(final String buttonType, final boolean doublepress, final boolean longpress) {
 		
-		if (callManager.getCallsLength() != 0) {
-			if (mSharedPreferences.getBoolean(PluginConstants.PREFERENCES_PLUGIN_ENABLED, false)) {
+		if (mSharedPreferences.getBoolean(PluginConstants.PREFERENCES_PLUGIN_ENABLED, false)) {
+			if (callManager.getCallsLength() != 0) {
 				if (!showingSendImage) {
 					if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_UP)) {
 						
@@ -345,16 +341,16 @@ public class SandboxPlugin extends AbstractPluginService {
 							final Call call = callManager.getActualCall();
 							final String message = messageManager.getActualMessage();
 							
-							// Track how many messages sends
-							myExistingTracker.trackEvent("ui_action", "button_press",
-							        "message_sended", 0l);
-							
 							if (call != null && message != null) {
 								try {
 									final SmsManager shortMessageManager = SmsManager.getDefault();
 									
 									shortMessageManager.sendTextMessage(call.getNumber(), null,
 									        message, null, null);
+									
+									// Track how many messages sends
+									myExistingTracker.trackEvent("ui_action", "button_press",
+									        "message_sended", 0l);
 									
 									// Show send image
 									PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
@@ -382,13 +378,13 @@ public class SandboxPlugin extends AbstractPluginService {
 						}
 					}
 				}
+			} else {
+				// Show no calls message
+				PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId,
+				        getString(R.string.plugin_message_no_call_log),
+				        PluginConstants.LIVEVIEW_SCREEN_X, 15);
+				
 			}
-		} else {
-			// Show no calls message
-			PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId,
-			        getString(R.string.plugin_message_no_call_log), PluginConstants.LIVEVIEW_SCREEN_X,
-			        15);
-			
 		}
 		
 	}

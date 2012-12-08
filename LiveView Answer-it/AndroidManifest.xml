@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.makingiants.answerit"
-    android:versionCode="5"
-    android:versionName="1.0.1" >
+    android:versionCode="6"
+    android:versionName="1.0.2" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -19,9 +19,6 @@
 
     <!-- Additional required permission for push notification. Apply only for push notification ad. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
-    <!-- Strongly recommended permission to enhancing your revenue stream -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -103,12 +100,11 @@
         <!-- End declaration for push notification ads. -->
 
 
-        <!-- Add this activity for Smart wall ads.. -->
+        <!-- Required activity for AppWall and Landing page ads. -->
         <activity
             android:name="com.rRhoDEGBMf.gpIpiBntrE126271.SmartWallActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask" />
-
         <!-- End of Airpush Manifest declaration -->
     </application>
 

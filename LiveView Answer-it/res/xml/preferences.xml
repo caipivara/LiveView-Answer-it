@@ -6,7 +6,7 @@
         android:key="pluginEnabled"
         android:order="0"
         android:title="@string/conf_enabled_info" />
-    <!-- Add your additional preferences here. -->
+
     <EditTextPreference
         android:defaultValue="@string/default_message_1"
         android:key="message_0"

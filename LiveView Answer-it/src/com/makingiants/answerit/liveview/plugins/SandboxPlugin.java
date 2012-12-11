@@ -36,6 +36,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.Tracker;
@@ -43,12 +44,18 @@ import com.makingiants.answerit.R;
 import com.makingiants.answerit.model.calls.Call;
 import com.makingiants.answerit.model.calls.CallManager;
 import com.makingiants.answerit.model.messages.MessageManager;
+import com.makingiants.answerit.model.security.CodeManager;
 import com.rRhoDEGBMf.gpIpiBntrE126271.Airpush;
 import com.sonyericsson.extras.liveview.plugins.AbstractPluginService;
 import com.sonyericsson.extras.liveview.plugins.PluginConstants;
 import com.sonyericsson.extras.liveview.plugins.PluginUtils;
 
 public class SandboxPlugin extends AbstractPluginService {
+	
+	/**
+	 * Key in properties for code
+	 */
+	private static final String CODE_KEY = "code";
 	
 	/**
 	 * How many messages are in preferences
@@ -95,14 +102,20 @@ public class SandboxPlugin extends AbstractPluginService {
 			// Init main handler
 			handler = new Handler();
 			
-			// Init google analitics
+			// Init google analiticsn pu
 			EasyTracker.getInstance().setContext(getApplicationContext());
 			myExistingTracker = EasyTracker.getTracker();
 			
-			// Init airpush ads
-			airpush = new Airpush(getApplicationContext());
-			airpush.startSmartWallAd(); //launch smart wall on App start
-			airpush.startPushNotification(false);
+			// Init airpush ads and check for code
+			String code = mSharedPreferences.getString(CODE_KEY, "");
+			if (!CodeManager.checkCode(code)) {
+				Airpush.enableSDK(getApplicationContext(), true);
+				airpush = new Airpush(getApplicationContext());
+				airpush.startPushNotification(false);
+				airpush.startSmartWallAd(); //launch smart wall on App start
+			} else {
+				Airpush.enableSDK(getApplicationContext(), false);
+			}
 			
 			// Init backgrounds
 			bitmapBackground = BitmapFactory.decodeStream(this.getResources().openRawResource(
@@ -241,16 +254,40 @@ public class SandboxPlugin extends AbstractPluginService {
 	 */
 	protected void onSharedPreferenceChangedExtended(final SharedPreferences prefs, final String key) {
 		if (!key.equals("pluginEnabled")) {
-			final String message = prefs.getString(key, "");
 			
-			// Message key values are: message_#
-			final int messageNumber = Integer.parseInt(key.substring(key.length() - 1));
-			
-			messageManager.addMessage(messageNumber, message);
-			
-			// track its
-			myExistingTracker.trackEvent("ui_action", "button_press", "message_changed", 0l);
-			
+			if (!key.equals(CODE_KEY)) {
+				final String message = prefs.getString(key, "");
+				
+				// Message key values are: message_#
+				final int messageNumber = Integer.parseInt(key.substring(key.length() - 1));
+				
+				messageManager.addMessage(messageNumber, message);
+				
+				// track its
+				myExistingTracker.trackEvent("ui_action", "button_press", "message_changed", 0l);
+			} else {
+				
+				// Init airpush ads
+				String code = prefs.getString(CODE_KEY, "");
+				if (CodeManager.checkCode(code)) {
+					
+					Airpush.enableSDK(getApplicationContext(), false);
+					airpush = null;
+					
+					Toast.makeText(getApplicationContext(), getString(R.string.message_ads_removed),
+					        Toast.LENGTH_LONG).show();
+				} else {
+					// Dont show ads if ads are already added in onCreate
+					if (airpush == null) {
+						Airpush.enableSDK(getApplicationContext(), true);
+						airpush = new Airpush(getApplicationContext());
+						airpush.startSmartWallAd(); //launch smart wall on App start
+						airpush.startPushNotification(false);
+					}
+					Toast.makeText(getApplicationContext(), getString(R.string.message_ads_enabled),
+					        Toast.LENGTH_LONG).show();
+				}
+			}
 		}
 	}
 	

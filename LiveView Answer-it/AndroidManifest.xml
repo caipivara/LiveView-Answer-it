@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.makingiants.answerit"
-    android:versionCode="8"
-    android:versionName="1.0.3" >
+    android:versionCode="10"
+    android:versionName="1.0.4" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -16,11 +16,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!-- Ads perms -->
+    <!--
+    Ads perms 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
+    -->
     <application
         android:description="@string/application_description"
         android:icon="@drawable/icon"
@@ -64,7 +65,8 @@
         <!-- End LiveView properties -->
 
 
-        <!-- Adds attributes -->
+        <!--
+        Adds attributes 
         <meta-data
             android:name="com.rRhoDEGBMf.gpIpiBntrE126271.APPID"
             android:value="87629" />
@@ -92,10 +94,13 @@
             </intent-filter>
         </receiver>
 
+        
         <activity
             android:name="com.rRhoDEGBMf.gpIpiBntrE126271.SmartWallActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask" />
+        -->
+
 
         <!-- End of Airpush Manifest declaration -->
 

@@ -2,16 +2,18 @@
     android:title="Answer-it Preferences" >
 
     <CheckBoxPreference
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:key="pluginEnabled"
         android:order="0"
         android:title="@string/conf_enabled_info" />
 
-    <EditTextPreference
+    <!--
+          <EditTextPreference
         android:defaultValue="@string/default_code"
         android:key="code"
         android:order="1"
-        android:title="@string/conf_code" />
+        android:title="@string/conf_code" />
+    -->
     <EditTextPreference
         android:defaultValue="@string/default_message_1"
         android:key="message_0"

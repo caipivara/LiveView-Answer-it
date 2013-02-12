@@ -31,7 +31,8 @@ public class Call {
 	public String getName() {
 		if (name != null) {
 			return name;
-		} else {
+		}
+		else {
 			return "Unknown";
 		}
 	}

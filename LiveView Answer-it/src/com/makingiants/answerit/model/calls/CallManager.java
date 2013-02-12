@@ -26,7 +26,8 @@ public class CallManager {
 	
 	public CallManager(final Context context) {
 		
-		numberLogCalls = context.getResources().getInteger(R.integer.number_log_calls);
+		numberLogCalls = context.getResources().getInteger(
+				R.integer.number_log_calls);
 		this.calls = CallLogDAO.getCallLog(numberLogCalls, context);
 		
 		this.actualCall = 0;
@@ -53,7 +54,8 @@ public class CallManager {
 	public Call getActualCall() {
 		if (calls.size() != 0) {
 			return calls.get(actualCall);
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -68,7 +70,8 @@ public class CallManager {
 				actualCall = 0;
 			}
 			return calls.get(actualCall);
-		} else {
+		}
+		else {
 			return null;
 		}
 		
@@ -84,7 +87,8 @@ public class CallManager {
 				actualCall = calls.size() - 1;
 			}
 			return calls.get(actualCall);
-		} else {
+		}
+		else {
 			return null;
 		}
 	}

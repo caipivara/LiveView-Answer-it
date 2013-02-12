@@ -33,16 +33,20 @@ public class CallLogDAO {
 			int maxCounter = 0;
 			
 			// Define Wich data query
-			String[] projection = new String[] { CallLog.Calls.NUMBER, CallLog.Calls.DATE,
-			        CallLog.Calls.TYPE, CallLog.Calls.CACHED_NAME };
+			String[] projection = new String[] { CallLog.Calls.NUMBER,
+					CallLog.Calls.DATE, CallLog.Calls.TYPE,
+					CallLog.Calls.CACHED_NAME };
 			
 			// Where will be the query
 			Uri contacts = CallLog.Calls.CONTENT_URI;
-			Cursor cursor = context.getContentResolver().query(contacts, projection, null, null,
-			        CallLog.Calls.DATE + " DESC");
-			// Make the query, date is used to get the list descending (first the last calls received)
-			/*Cursor cursor = activity.managedQuery(contacts, projection, null, null, CallLog.Calls.DATE
-			        + " DESC");*/
+			Cursor cursor = context.getContentResolver().query(contacts,
+					projection, null, null, CallLog.Calls.DATE + " DESC");
+			// Make the query, date is used to get the list descending (first
+			// the last calls received)
+			/*
+			 * Cursor cursor = activity.managedQuery(contacts, projection, null,
+			 * null, CallLog.Calls.DATE + " DESC");
+			 */
 			try {
 				if (cursor.moveToFirst()) {
 					String name = null;
@@ -50,13 +54,17 @@ public class CallLogDAO {
 					int type = 0;
 					
 					do {
-						name = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME));
-						number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
-						type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
+						name = cursor.getString(cursor
+								.getColumnIndex(CallLog.Calls.CACHED_NAME));
+						number = cursor.getString(cursor
+								.getColumnIndex(CallLog.Calls.NUMBER));
+						type = cursor.getInt(cursor
+								.getColumnIndex(CallLog.Calls.TYPE));
 						
 						// Accept only INCOMING_TYPE and MISSED_TYPE calls
-						// and unique numbers 
-						if (type != CallLog.Calls.OUTGOING_TYPE && !callsAdded.contains(number)) {
+						// and unique numbers
+						if (type != CallLog.Calls.OUTGOING_TYPE
+								&& !callsAdded.contains(number)) {
 							callLogs.add(new Call(name, number));
 							callsAdded.add(number);
 							maxCounter++;

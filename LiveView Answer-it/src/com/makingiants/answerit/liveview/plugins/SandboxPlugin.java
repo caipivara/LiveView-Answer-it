@@ -52,7 +52,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	/**
 	 * Key in properties for code
 	 */
-	//private static final String CODE_KEY = "code";
+	// private static final String CODE_KEY = "code";
 	
 	/**
 	 * How many messages are in preferences
@@ -75,13 +75,14 @@ public class SandboxPlugin extends AbstractPluginService {
 	
 	// Send image attributes
 	private Bitmap bitmapSend;// Used to show send image while sending
-	private boolean showingSendImage;// Used to disable any interaction while bitmapSend is showed
+	private boolean showingSendImage;// Used to disable any interaction while
+										// bitmapSend is showed
 	
 	// Paint used for text
 	private Paint bigTextPaint, littleTextPaint;
 	
 	// Ads attribute
-	//private Airpush airpush;
+	// private Airpush airpush;
 	
 	// Google Analitics tracker
 	private Tracker myExistingTracker;
@@ -104,22 +105,22 @@ public class SandboxPlugin extends AbstractPluginService {
 			myExistingTracker = EasyTracker.getTracker();
 			
 			// Init airpush ads and check for code
-			/*String code = mSharedPreferences.getString(CODE_KEY, "");
-			if (!CodeManager.checkCode(code)) {
-				Airpush.enableSDK(getApplicationContext(), true);
-				airpush = new Airpush(getApplicationContext());
-				airpush.startPushNotification(false);
-				//airpush.startSmartWallAd(); //launch smart wall on App start
-			} else {
-				Airpush.enableSDK(getApplicationContext(), false);
-			}*/
+			/*
+			 * String code = mSharedPreferences.getString(CODE_KEY, ""); if
+			 * (!CodeManager.checkCode(code)) {
+			 * Airpush.enableSDK(getApplicationContext(), true); airpush = new
+			 * Airpush(getApplicationContext());
+			 * airpush.startPushNotification(false);
+			 * //airpush.startSmartWallAd(); //launch smart wall on App start }
+			 * else { Airpush.enableSDK(getApplicationContext(), false); }
+			 */
 			
 			// Init backgrounds
-			bitmapBackground = BitmapFactory.decodeStream(this.getResources().openRawResource(
-			        R.drawable.background));
+			bitmapBackground = BitmapFactory.decodeStream(this.getResources()
+					.openRawResource(R.drawable.background));
 			
-			bitmapSend = BitmapFactory.decodeStream(this.getResources().openRawResource(
-			        R.drawable.background_sent));
+			bitmapSend = BitmapFactory.decodeStream(this.getResources()
+					.openRawResource(R.drawable.background_sent));
 			
 			// Init paints
 			bigTextPaint = new Paint();
@@ -137,12 +138,14 @@ public class SandboxPlugin extends AbstractPluginService {
 			littleTextPaint.setTextAlign(Paint.Align.CENTER);
 			
 			// Init Messages values
-			numberOfMessages = getResources().getInteger(R.integer.number_default_messages);
+			numberOfMessages = getResources().getInteger(
+					R.integer.number_default_messages);
 			messageManager = new MessageManager(this, numberOfMessages);
 			
 			callManager = new CallManager(this.getApplicationContext());
 			
-		} else {
+		}
+		else {
 			callManager.updateCalls(this.getApplicationContext());
 		}
 		
@@ -154,7 +157,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	public void onCreate() {
 		super.onCreate();
 		
-		// ... 
+		// ...
 		// Do plugin specifics.
 		// ...
 	}
@@ -163,7 +166,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	public void onDestroy() {
 		super.onDestroy();
 		
-		// ... 
+		// ...
 		// Do plugin specifics.
 		// ...
 	}
@@ -171,6 +174,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	/**
 	 * Plugin is just sending notifications.
 	 */
+	@Override
 	protected boolean isSandboxPlugin() {
 		return true;
 	}
@@ -178,15 +182,18 @@ public class SandboxPlugin extends AbstractPluginService {
 	/**
 	 * Must be implemented. Starts plugin work, if any.
 	 */
+	@Override
 	protected void startWork() {
 		
 		// Check if plugin is enabled.
-		if (mSharedPreferences.getBoolean(PluginConstants.PREFERENCES_PLUGIN_ENABLED, false)) {
+		if (mSharedPreferences.getBoolean(
+				PluginConstants.PREFERENCES_PLUGIN_ENABLED, false)) {
 			// Track plugin started
 			myExistingTracker.trackView(getString(R.string.app_name));
 			
 			handler.postDelayed(new Runnable() {
 				
+				@Override
 				public void run() {
 					if (callManager.getCallsLength() != 0) {
 						final Call call = callManager.getActualCall();
@@ -196,14 +203,16 @@ public class SandboxPlugin extends AbstractPluginService {
 							message = getString(R.string.plugin_message_no_messages);
 						}
 						
-						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-						        getBackgroundBitmapWithCall(call, message));
+						PluginUtils.sendScaledImage(mLiveViewAdapter,
+								mPluginId,
+								getBackgroundBitmapWithCall(call, message));
 						
-					} else {
+					}
+					else {
 						// Show no calls message
 						PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId,
-						        getString(R.string.plugin_message_no_call_log),
-						        PluginConstants.LIVEVIEW_SCREEN_X, 15);
+								getString(R.string.plugin_message_no_call_log),
+								PluginConstants.LIVEVIEW_SCREEN_X, 15);
 					}
 				}
 				
@@ -215,6 +224,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	/**
 	 * Must be implemented. Stops plugin work, if any.
 	 */
+	@Override
 	protected void stopWork() {
 		
 	}
@@ -227,7 +237,9 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * If needed, do additional actions here, e.g. 
 	 * starting any worker that is needed.
 	 */
-	protected void onServiceConnectedExtended(final ComponentName className, final IBinder service) {
+	@Override
+	protected void onServiceConnectedExtended(final ComponentName className,
+			final IBinder service) {
 		
 	}
 	
@@ -238,6 +250,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * 
 	 * Do any additional actions here.
 	 */
+	@Override
 	protected void onServiceDisconnectedExtended(final ComponentName className) {
 		
 	}
@@ -249,43 +262,45 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * 
 	 * The shared preferences has been changed. Take actions needed. 
 	 */
-	protected void onSharedPreferenceChangedExtended(final SharedPreferences prefs, final String key) {
+	@Override
+	protected void onSharedPreferenceChangedExtended(
+			final SharedPreferences prefs, final String key) {
 		if (!key.equals("pluginEnabled")) {
 			
-			//if (!key.equals(CODE_KEY)) {
+			// if (!key.equals(CODE_KEY)) {
 			final String message = prefs.getString(key, "");
 			
 			// Message key values are: message_#
-			final int messageNumber = Integer.parseInt(key.substring(key.length() - 1));
+			final int messageNumber = Integer.parseInt(key.substring(key
+					.length() - 1));
 			
 			messageManager.addMessage(messageNumber, message);
 			
 			// track its
-			myExistingTracker.trackEvent("ui_action", "button_press", "message_changed", 0l);
-			//}
-			/*else {
-				
-				// Init airpush ads
-				String code = prefs.getString(CODE_KEY, "");
-				if (CodeManager.checkCode(code)) {
-					
-					Airpush.enableSDK(getApplicationContext(), false);
-					airpush = null;
-					
-					Toast.makeText(getApplicationContext(), getString(R.string.message_ads_removed),
-					        Toast.LENGTH_LONG).show();
-				} else {
-					// Dont show ads if ads are already added in onCreate
-					if (airpush == null) {
-						Airpush.enableSDK(getApplicationContext(), true);
-						airpush = new Airpush(getApplicationContext());
-						//airpush.startSmartWallAd(); //launch smart wall on App start
-						airpush.startPushNotification(false);
-					}
-					Toast.makeText(getApplicationContext(), getString(R.string.message_ads_enabled),
-					        Toast.LENGTH_LONG).show();
-				}
-			}*/
+			myExistingTracker.trackEvent("ui_action", "button_press",
+					"message_changed", 0l);
+			// }
+			/*
+			 * else {
+			 * 
+			 * // Init airpush ads String code = prefs.getString(CODE_KEY, "");
+			 * if (CodeManager.checkCode(code)) {
+			 * 
+			 * Airpush.enableSDK(getApplicationContext(), false); airpush =
+			 * null;
+			 * 
+			 * Toast.makeText(getApplicationContext(),
+			 * getString(R.string.message_ads_removed),
+			 * Toast.LENGTH_LONG).show(); } else { // Dont show ads if ads are
+			 * already added in onCreate if (airpush == null) {
+			 * Airpush.enableSDK(getApplicationContext(), true); airpush = new
+			 * Airpush(getApplicationContext()); //airpush.startSmartWallAd();
+			 * //launch smart wall on App start
+			 * airpush.startPushNotification(false); }
+			 * Toast.makeText(getApplicationContext(),
+			 * getString(R.string.message_ads_enabled),
+			 * Toast.LENGTH_LONG).show(); } }
+			 */
 		}
 	}
 	
@@ -293,6 +308,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * This method is called by the LiveView application to start the plugin.
 	 * For sandbox plugins, this means when the user has pressed the action button to start the plugin.
 	 */
+	@Override
 	protected void startPlugin() {
 		// // Log.d(PluginConstants.LOG_TAG, "startPlugin");
 		
@@ -303,6 +319,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * This method is called by the LiveView application to stop the plugin.
 	 * For sandbox plugins, this means when the user has long-pressed the action button to stop the plugin.
 	 */
+	@Override
 	protected void stopPlugin() {
 		// // Log.d(PluginConstants.LOG_TAG, "stopPlugin");
 		stopWork();
@@ -315,9 +332,12 @@ public class SandboxPlugin extends AbstractPluginService {
 	/**
 	 * Sandbox mode only. When a user presses any buttons on the LiveView device, this method will be called.
 	 */
-	protected void button(final String buttonType, final boolean doublepress, final boolean longpress) {
+	@Override
+	protected void button(final String buttonType, final boolean doublepress,
+			final boolean longpress) {
 		
-		if (mSharedPreferences.getBoolean(PluginConstants.PREFERENCES_PLUGIN_ENABLED, false)) {
+		if (mSharedPreferences.getBoolean(
+				PluginConstants.PREFERENCES_PLUGIN_ENABLED, false)) {
 			if (callManager.getCallsLength() != 0) {
 				if (!showingSendImage) {
 					if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_UP)) {
@@ -329,10 +349,13 @@ public class SandboxPlugin extends AbstractPluginService {
 							message = getString(R.string.plugin_message_no_messages);
 						}
 						
-						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-						        getBackgroundBitmapWithCall(call, message));
+						PluginUtils.sendScaledImage(mLiveViewAdapter,
+								mPluginId,
+								getBackgroundBitmapWithCall(call, message));
 						
-					} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_DOWN)) {
+					}
+					else if (buttonType
+							.equalsIgnoreCase(PluginConstants.BUTTON_DOWN)) {
 						
 						final Call call = callManager.getNextCall();
 						String message = messageManager.getActualMessage();
@@ -341,10 +364,13 @@ public class SandboxPlugin extends AbstractPluginService {
 							message = getString(R.string.plugin_message_no_messages);
 						}
 						
-						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-						        getBackgroundBitmapWithCall(call, message));
+						PluginUtils.sendScaledImage(mLiveViewAdapter,
+								mPluginId,
+								getBackgroundBitmapWithCall(call, message));
 						
-					} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_LEFT)) {
+					}
+					else if (buttonType
+							.equalsIgnoreCase(PluginConstants.BUTTON_LEFT)) {
 						
 						final Call call = callManager.getActualCall();
 						String message = messageManager.getPreviousMessage();
@@ -353,10 +379,13 @@ public class SandboxPlugin extends AbstractPluginService {
 							message = getString(R.string.plugin_message_no_messages);
 						}
 						
-						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-						        getBackgroundBitmapWithCall(call, message));
+						PluginUtils.sendScaledImage(mLiveViewAdapter,
+								mPluginId,
+								getBackgroundBitmapWithCall(call, message));
 						
-					} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_RIGHT)) {
+					}
+					else if (buttonType
+							.equalsIgnoreCase(PluginConstants.BUTTON_RIGHT)) {
 						
 						final Call call = callManager.getActualCall();
 						String message = messageManager.getNextMessage();
@@ -365,61 +394,81 @@ public class SandboxPlugin extends AbstractPluginService {
 							message = getString(R.string.plugin_message_no_messages);
 						}
 						
-						PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-						        getBackgroundBitmapWithCall(call, message));
+						PluginUtils.sendScaledImage(mLiveViewAdapter,
+								mPluginId,
+								getBackgroundBitmapWithCall(call, message));
 						
-					} else if (buttonType.equalsIgnoreCase(PluginConstants.BUTTON_SELECT)) {
+					}
+					else if (buttonType
+							.equalsIgnoreCase(PluginConstants.BUTTON_SELECT)) {
 						
 						if (!showingSendImage) {
 							
 							// Send message
 							final Call call = callManager.getActualCall();
-							final String message = messageManager.getActualMessage();
+							final String message = messageManager
+									.getActualMessage();
 							
 							if (call != null && message != null) {
 								try {
 									
-									final SmsManager shortMessageManager = SmsManager.getDefault();
+									final SmsManager shortMessageManager = SmsManager
+											.getDefault();
 									
-									shortMessageManager.sendTextMessage(call.getNumber(), null,
-									        message, null, null);
+									shortMessageManager.sendTextMessage(
+											call.getNumber(), null, message,
+											null, null);
 									
 									showingSendImage = true;
-									mLiveViewAdapter.vibrateControl(mPluginId, 0, 200);
+									mLiveViewAdapter.vibrateControl(mPluginId,
+											0, 200);
 									
 									// Show send image
-									PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-									        bitmapSend);
+									PluginUtils.sendScaledImage(
+											mLiveViewAdapter, mPluginId,
+											bitmapSend);
 									
 									// Track how many messages sends
-									myExistingTracker.trackEvent("ui_action", "button_press",
-									        "message_sended", 0l);
+									myExistingTracker.trackEvent("ui_action",
+											"button_press", "message_sended",
+											0l);
 									
-									// Set the schedule to allow sending again and show send image for a while
+									// Set the schedule to allow sending again
+									// and show send image for a while
 									handler.postDelayed(new Runnable() {
 										
+										@Override
 										public void run() {
-											final Call call = callManager.getActualCall();
-											final String message = messageManager.getActualMessage();
+											final Call call = callManager
+													.getActualCall();
+											final String message = messageManager
+													.getActualMessage();
 											
-											PluginUtils.sendScaledImage(mLiveViewAdapter, mPluginId,
-											        getBackgroundBitmapWithCall(call, message));
+											PluginUtils
+													.sendScaledImage(
+															mLiveViewAdapter,
+															mPluginId,
+															getBackgroundBitmapWithCall(
+																	call,
+																	message));
 											
 											showingSendImage = false;
 										}
 									}, 1000);
 								} catch (IllegalArgumentException e) {
-									Log.e("LiveView Answer-it", "IllegalArgumentException 1", e);
+									Log.e("LiveView Answer-it",
+											"IllegalArgumentException 1", e);
 								}
 							}
 						}
 					}
 				}
-			} else {
+			}
+			else {
 				// Show no calls message
 				PluginUtils.sendTextBitmap(mLiveViewAdapter, mPluginId,
-				        getString(R.string.plugin_message_no_call_log),
-				        PluginConstants.LIVEVIEW_SCREEN_X, 15);
+						getString(R.string.plugin_message_no_call_log),
+						PluginConstants.LIVEVIEW_SCREEN_X, 15);
 				
 			}
 		}
@@ -429,14 +478,18 @@ public class SandboxPlugin extends AbstractPluginService {
 	/**
 	 * Called by the LiveView application to indicate the capabilites of the LiveView device.
 	 */
-	protected void displayCaps(final int displayWidthPx, final int displayHeigthPx) {
-		// // Log.d(PluginConstants.LOG_TAG, "displayCaps - width " + displayWidthPx + ", height "
-		//       + displayHeigthPx);
+	@Override
+	protected void displayCaps(final int displayWidthPx,
+			final int displayHeigthPx) {
+		// // Log.d(PluginConstants.LOG_TAG, "displayCaps - width " +
+		// displayWidthPx + ", height "
+		// + displayHeigthPx);
 	}
 	
 	/**
 	 * Called by the LiveView application when the plugin has been kicked out by the framework.
 	 */
+	@Override
 	protected void onUnregistered() {
 		// // Log.d(PluginConstants.LOG_TAG, "onUnregistered");
 		stopWork();
@@ -446,14 +499,17 @@ public class SandboxPlugin extends AbstractPluginService {
 	 * When a user presses the "open in phone" button on the LiveView device, this method is called.
 	 * You could e.g. open a browser and go to a specific URL, or open the music player.
 	 */
+	@Override
 	protected void openInPhone(final String openInPhoneAction) {
-		// // Log.d(PluginConstants.LOG_TAG, "openInPhone: " + openInPhoneAction);
+		// // Log.d(PluginConstants.LOG_TAG, "openInPhone: " +
+		// openInPhoneAction);
 	}
 	
 	/**
 	 * Sandbox mode only. Called by the LiveView application when the screen mode has changed.
 	 * 0 = screen is off, 1 = screen is on
 	 */
+	@Override
 	protected void screenMode(final int mode) {
 	}
 	
@@ -461,9 +517,11 @@ public class SandboxPlugin extends AbstractPluginService {
 	// GUI Changes
 	// ****************************************************************
 	
-	private Bitmap getBackgroundBitmapWithCall(final Call call, final String message) {
+	private Bitmap getBackgroundBitmapWithCall(final Call call,
+			final String message) {
 		
-		final Bitmap background = bitmapBackground.copy(Bitmap.Config.RGB_565, true);
+		final Bitmap background = bitmapBackground.copy(Bitmap.Config.RGB_565,
+				true);
 		
 		final Canvas canvas = new Canvas(background);
 		
@@ -472,23 +530,30 @@ public class SandboxPlugin extends AbstractPluginService {
 		final String[] name = trimText(call.getName(), 14);
 		if (name.length == 2) {
 			
-			canvas.drawText(name[0], PluginConstants.LIVEVIEW_SCREEN_X / 2, 35, bigTextPaint);
-			canvas.drawText(name[1], PluginConstants.LIVEVIEW_SCREEN_X / 2, 50, bigTextPaint);
-			canvas.drawText(number, (PluginConstants.LIVEVIEW_SCREEN_X - number.length()) / 2, 65,
-			        littleTextPaint);
-		} else {
+			canvas.drawText(name[0], PluginConstants.LIVEVIEW_SCREEN_X / 2, 35,
+					bigTextPaint);
+			canvas.drawText(name[1], PluginConstants.LIVEVIEW_SCREEN_X / 2, 50,
+					bigTextPaint);
+			canvas.drawText(number,
+					(PluginConstants.LIVEVIEW_SCREEN_X - number.length()) / 2,
+					65, littleTextPaint);
+		}
+		else {
 			
-			canvas.drawText(name[0], PluginConstants.LIVEVIEW_SCREEN_X / 2, 40, bigTextPaint);
-			canvas.drawText(number, (PluginConstants.LIVEVIEW_SCREEN_X - number.length()) / 2, 55,
-			        littleTextPaint);
+			canvas.drawText(name[0], PluginConstants.LIVEVIEW_SCREEN_X / 2, 40,
+					bigTextPaint);
+			canvas.drawText(number,
+					(PluginConstants.LIVEVIEW_SCREEN_X - number.length()) / 2,
+					55, littleTextPaint);
 			
 		}
 		// Draw message
 		final String[] messageTrimed = trimText(message, 18);
-		canvas.drawText(messageTrimed[0], PluginConstants.LIVEVIEW_SCREEN_X / 2, 100, littleTextPaint);
+		canvas.drawText(messageTrimed[0],
+				PluginConstants.LIVEVIEW_SCREEN_X / 2, 100, littleTextPaint);
 		if (messageTrimed.length == 2) {
-			canvas.drawText(messageTrimed[1], PluginConstants.LIVEVIEW_SCREEN_X / 2, 110,
-			        littleTextPaint);
+			canvas.drawText(messageTrimed[1],
+					PluginConstants.LIVEVIEW_SCREEN_X / 2, 110, littleTextPaint);
 		}
 		
 		return background;
@@ -508,7 +573,8 @@ public class SandboxPlugin extends AbstractPluginService {
 			
 			return new String[] { message };
 			
-		} else {
+		}
+		else {
 			
 			final String message1 = message.substring(0, maxLength);
 			String message2 = message.substring(maxLength, message.length());

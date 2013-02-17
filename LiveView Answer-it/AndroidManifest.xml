@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.makingiants.answerit"
-    android:versionCode="11"
-    android:versionName="1.0.5" >
+    android:versionCode="12"
+    android:versionName="1.0.6" >
 
     <uses-sdk
         android:minSdkVersion="4"
@@ -20,7 +20,7 @@
     Ads perms 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     -->
     <application
         android:description="@string/application_description"
@@ -98,7 +98,7 @@
         <activity
             android:name="com.rRhoDEGBMf.gpIpiBntrE126271.SmartWallActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask" />
         -->
 
 

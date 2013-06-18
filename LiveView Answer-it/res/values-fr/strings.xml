@@ -7,11 +7,7 @@
     <string name="intent_preferences">com.makingiants.answerit.liveview.plugins.PREFERENCES</string>
     <string name="intent_service">com.makingiants.answerit.liveview.plugins.answeritservice</string>
     <string name="application_description">Extends:com.sonyericsson.extras.liveview</string>
-    <string name="message_ads_removed">Merci pour le don, annonces retiré maintenant</string>
-    <string name="message_ads_enabled">Le code n\'est pas Corret, vérifier ou faire un don à obtenir un valide</string>
     <string name="conf_enabled_info">Activée</string>
-    <string name="conf_code">Supprime la publicité</string>
-    <string name="default_code">Faire un don à obtenir ce code et supprimer des annonces</string>
     <string name="conf_message_1_info">Message 1</string>
     <string name="conf_message_2_info">Message 2</string>
     <string name="conf_message_3_info">Message 3</string>

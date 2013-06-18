@@ -16,27 +16,28 @@ import com.makingiants.answerit.model.calls.Call;
  * Know how to collect the call log
  */
 public class CallLogDAO {
-	
+
 	/**
 	 * Get the actual call log on the device
 	 * 
-	 * @param calls number of maximum calls to find
-	 * @param context 
+	 * @param calls
+	 *            number of maximum calls to find
+	 * @param context
 	 * 
 	 * @return list of calls with size == calls
 	 */
 	public static ArrayList<Call> getCallLog(int calls, Context context) {
 		ArrayList<Call> callLogs = new ArrayList<Call>();
 		Set<String> callsAdded = new LinkedHashSet<String>();
-		
+
 		try {
 			int maxCounter = 0;
-			
+
 			// Define Wich data query
 			String[] projection = new String[] { CallLog.Calls.NUMBER,
 					CallLog.Calls.DATE, CallLog.Calls.TYPE,
 					CallLog.Calls.CACHED_NAME };
-			
+
 			// Where will be the query
 			Uri contacts = CallLog.Calls.CONTENT_URI;
 			Cursor cursor = context.getContentResolver().query(contacts,
@@ -52,7 +53,7 @@ public class CallLogDAO {
 					String name = null;
 					String number = null;
 					int type = 0;
-					
+
 					do {
 						name = cursor.getString(cursor
 								.getColumnIndex(CallLog.Calls.CACHED_NAME));
@@ -60,7 +61,7 @@ public class CallLogDAO {
 								.getColumnIndex(CallLog.Calls.NUMBER));
 						type = cursor.getInt(cursor
 								.getColumnIndex(CallLog.Calls.TYPE));
-						
+
 						// Accept only INCOMING_TYPE and MISSED_TYPE calls
 						// and unique numbers
 						if (type != CallLog.Calls.OUTGOING_TYPE
@@ -74,13 +75,13 @@ public class CallLogDAO {
 			} finally {
 				cursor.close();
 			}
-			
+
 		} catch (NullPointerException e) {
 			Log.e("Answer-it", "CallLogDao NullPointerException 1", e);
 		} catch (Exception e) {
 			Log.e("Answer-it", "CallLogDao Exception 2", e);
 		}
-		
+
 		return callLogs;
 	}
 }

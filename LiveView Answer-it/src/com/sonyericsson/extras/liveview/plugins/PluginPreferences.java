@@ -27,16 +27,16 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
 /**
- * Implements PreferenceActivity and sets the project preferences to the 
- * shared preferences of the current user session.
+ * Implements PreferenceActivity and sets the project preferences to the shared
+ * preferences of the current user session.
  */
 public class PluginPreferences extends PreferenceActivity {
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(getResources().getIdentifier("preferences",
 				"xml", getPackageName()));
 	}
-	
+
 }

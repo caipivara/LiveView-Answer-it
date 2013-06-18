@@ -31,14 +31,14 @@ import com.sonyericsson.extras.liveview.IPluginServiceCallbackV1;
 import com.sonyericsson.extras.liveview.IPluginServiceV1;
 
 public class LiveViewAdapter {
-	
+
 	// Reference to LiveView application stub
 	private IPluginServiceV1 mLiveView = null;
-	
+
 	public LiveViewAdapter(IPluginServiceV1 liveView) {
 		this.mLiveView = liveView;
 	}
-	
+
 	public int installPlugin(IPluginServiceCallbackV1 callback,
 			String menuIcon, String pluginName, boolean sandbox,
 			String packageName, String launchIntent) throws RemoteException {
@@ -49,23 +49,22 @@ public class LiveViewAdapter {
 					sandbox, packageName);
 			Log.d(PluginConstants.LOG_TAG, "Plugin registered. mPluginId: "
 					+ pluginId + " isSandbox? " + sandbox);
-			
+
 			// Notify installation
 			int installedOk = mLiveView.notifyInstalled(launchIntent,
 					pluginName);
 			Log.d(PluginConstants.LOG_TAG, "Plugin installation notified.");
-			
+
 			if (installedOk >= 0) {
 				Log.d(PluginConstants.LOG_TAG, "Registry success!");
-			}
-			else if (installedOk == -1) {
+			} else if (installedOk == -1) {
 				Log.d(PluginConstants.LOG_TAG, "Already registered!");
 			}
 		}
-		
+
 		return pluginId;
 	}
-	
+
 	public int register(IPluginServiceCallbackV1 cb, String imageMenu,
 			String pluginName, boolean selectableMenu, String packageName) {
 		int result = 0;
@@ -75,10 +74,10 @@ public class LiveViewAdapter {
 		} catch (RemoteException re) {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
-		
+
 		return result;
 	}
-	
+
 	public void unregister(int id, IPluginServiceCallbackV1 cb) {
 		try {
 			mLiveView.unregister(id, cb);
@@ -86,7 +85,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public void sendAnnounce(int id, String imageAnnounce, String header,
 			String body, long timestamp, String openInPhoneAction) {
 		try {
@@ -96,7 +95,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public void sendImage(int id, int x, int y, String image) {
 		try {
 			mLiveView.sendImage(id, x, y, image);
@@ -104,7 +103,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public void sendImageAsBitmap(int id, int x, int y, Bitmap bitmapData) {
 		try {
 			mLiveView.sendImageAsBitmap(id, x, y, bitmapData);
@@ -112,7 +111,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public void clearDisplay(int id) {
 		try {
 			mLiveView.clearDisplay(id);
@@ -120,7 +119,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public int notifyInstalled(String launcherIntent, String pluginName) {
 		int result = 0;
 		try {
@@ -128,10 +127,10 @@ public class LiveViewAdapter {
 		} catch (RemoteException re) {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
-		
+
 		return result;
 	}
-	
+
 	public void ledControl(int id, int rgb565, int delayTime, int onTime) {
 		try {
 			mLiveView.ledControl(id, rgb565, delayTime, onTime);
@@ -139,7 +138,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public void vibrateControl(int id, int delayTime, int onTime) {
 		try {
 			mLiveView.vibrateControl(id, delayTime, onTime);
@@ -147,7 +146,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public void sendImageAsBitmapByteArray(int id, int x, int y,
 			byte[] bitmapByteArray) {
 		try {
@@ -156,7 +155,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public void screenOff(int id) {
 		try {
 			mLiveView.screenOff(id);
@@ -164,7 +163,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public void screenDim(int id) {
 		try {
 			mLiveView.screenDim(id);
@@ -172,7 +171,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public void screenOn(int id) {
 		try {
 			mLiveView.screenOn(id);
@@ -180,7 +179,7 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 	public void screenOnAuto(int id) {
 		try {
 			mLiveView.screenOnAuto(id);
@@ -188,5 +187,5 @@ public class LiveViewAdapter {
 			Log.e(PluginConstants.LOG_TAG, "Unexpected remote exception.");
 		}
 	}
-	
+
 }

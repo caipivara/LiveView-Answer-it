@@ -7,13 +7,6 @@
         android:order="0"
         android:title="@string/conf_enabled_info" />
 
-    <!--
-          <EditTextPreference
-        android:defaultValue="@string/default_code"
-        android:key="code"
-        android:order="1"
-        android:title="@string/conf_code" />
-    -->
     <EditTextPreference
         android:defaultValue="@string/default_message_1"
         android:key="message_0"

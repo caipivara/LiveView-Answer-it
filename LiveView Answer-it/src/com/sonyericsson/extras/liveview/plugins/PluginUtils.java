@@ -43,29 +43,32 @@ import android.util.Log;
  * Utils.
  */
 public final class PluginUtils {
-	
+
 	private PluginUtils() {
-		
+
 	}
-	
+
 	/**
 	 * Stores icon to phone file system
 	 * 
-	 * @param resources Reference to project resources
-	 * @param resource Reference to specific resource
-	 * @param fileName The icon file name
+	 * @param resources
+	 *            Reference to project resources
+	 * @param resource
+	 *            Reference to specific resource
+	 * @param fileName
+	 *            The icon file name
 	 */
 	public static String storeIconToFile(Context ctx, Resources resources,
 			int resource, String fileName) {
 		Log.d(PluginConstants.LOG_TAG, "Store icon to file.");
-		
+
 		if (resources == null) {
 			return "";
 		}
-		
+
 		Bitmap bitmap = BitmapFactory.decodeStream(resources
 				.openRawResource(resource));
-		
+
 		try {
 			FileOutputStream fos = ctx.openFileOutput(fileName,
 					Context.MODE_WORLD_READABLE);
@@ -75,17 +78,17 @@ public final class PluginUtils {
 		} catch (IOException e) {
 			Log.e(PluginConstants.LOG_TAG, "Failed to store to device", e);
 		}
-		
+
 		File iconFile = ctx.getFileStreamPath(fileName);
 		Log.d(PluginConstants.LOG_TAG,
 				"Icon stored. " + iconFile.getAbsolutePath());
-		
+
 		return iconFile.getAbsolutePath();
 	}
-	
+
 	/**
 	 * Rotates and stores image to device
-	 *  
+	 * 
 	 * @param bitmap
 	 * @param degrees
 	 * @return
@@ -102,23 +105,28 @@ public final class PluginUtils {
 			Log.e(PluginConstants.LOG_TAG, "Failed to rotate bitmap.", e);
 			return;
 		}
-		
+
 		sendScaledImage(liveView, pluginId, newBitmap);
 	}
-	
+
 	public static void sendTextBitmap(LiveViewAdapter liveView, int pluginId,
 			String text) {
 		sendTextBitmap(liveView, pluginId, text, 64, 15);
 	}
-	
+
 	/**
 	 * Stores text to an image on file.
 	 * 
-	 * @param liveView Reference to LiveView connection
-	 * @param pluginId Id of the plugin
-	 * @param text The text string
-	 * @param bitmapSizeX Bitmap size X
-	 * @param fontSize Font size
+	 * @param liveView
+	 *            Reference to LiveView connection
+	 * @param pluginId
+	 *            Id of the plugin
+	 * @param text
+	 *            The text string
+	 * @param bitmapSizeX
+	 *            Bitmap size X
+	 * @param fontSize
+	 *            Font size
 	 * @return Absolute path to file
 	 */
 	public static void sendTextBitmap(LiveViewAdapter liveView, int pluginId,
@@ -131,19 +139,19 @@ public final class PluginUtils {
 		} catch (IllegalArgumentException e) {
 			return;
 		}
-		
+
 		Canvas canvas = new Canvas(bitmap);
-		
+
 		// Set the text properties in the canvas
 		TextPaint textPaint = new TextPaint();
 		textPaint.setTextSize(fontSize);
 		textPaint.setColor(Color.WHITE);
-		
+
 		// Create the text layout and draw it to the canvas
 		Layout textLayout = new StaticLayout(text, textPaint, bitmapSizeX,
 				Layout.Alignment.ALIGN_CENTER, 1, 1, false);
 		textLayout.draw(canvas);
-		
+
 		try {
 			liveView.sendImageAsBitmap(pluginId, centerX(bitmap),
 					centerY(bitmap), bitmap);
@@ -151,7 +159,7 @@ public final class PluginUtils {
 			Log.d(PluginConstants.LOG_TAG, "Failed to send bitmap", e);
 		}
 	}
-	
+
 	/**
 	 * Gets resource id dynamically
 	 * 
@@ -165,7 +173,7 @@ public final class PluginUtils {
 		return context.getResources().getIdentifier(resourceName, resourceType,
 				context.getPackageName());
 	}
-	
+
 	/**
 	 * Gets resource string dynamically
 	 * 
@@ -178,7 +186,7 @@ public final class PluginUtils {
 		int resourceId = getDynamicResourceId(context, resourceName, "string");
 		return context.getString(resourceId);
 	}
-	
+
 	/**
 	 * Sends an image to LiveView and puts it in the middle of the screen
 	 * 
@@ -198,7 +206,7 @@ public final class PluginUtils {
 			Log.e(PluginConstants.LOG_TAG, "Failed to send image.", e);
 		}
 	}
-	
+
 	/**
 	 * Get centered X axle
 	 * 
@@ -209,7 +217,7 @@ public final class PluginUtils {
 		return (PluginConstants.LIVEVIEW_SCREEN_X / 2)
 				- (bitmap.getWidth() / 2);
 	}
-	
+
 	/**
 	 * Get centered Y axle
 	 * 
@@ -220,5 +228,5 @@ public final class PluginUtils {
 		return (PluginConstants.LIVEVIEW_SCREEN_Y / 2)
 				- (bitmap.getHeight() / 2);
 	}
-	
+
 }

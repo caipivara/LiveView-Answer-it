@@ -7,7 +7,7 @@
     <string name="intent_preferences">com.makingiants.answerit.liveview.plugins.PREFERENCES</string>
     <string name="intent_service">com.makingiants.answerit.liveview.plugins.answeritservice</string>
     <string name="application_description">Extends:com.sonyericsson.extras.liveview</string>
-    <string name="conf_enabled_info">Attivato</string>
+    <string name="conf_enabled_info">Enabled</string>
     <string name="conf_message_1_info">Messaggio 1</string>
     <string name="conf_message_2_info">Messaggio 2</string>
     <string name="conf_message_3_info">Messaggio 3</string>

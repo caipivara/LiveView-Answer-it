@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.makingiants.answerit"
-    android:versionCode="14"
-    android:versionName="1.0.7" >
+    android:versionCode="18"
+    android:versionName="1.0.8" >
 
     <uses-sdk
         android:minSdkVersion="4"
@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:description="@string/application_description"
@@ -32,6 +33,9 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name="com.makingiants.answerit.InAppBuyActivity"
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name="com.sonyericsson.extras.liveview.plugins.PluginPreferences"
             android:label="Answer-it" >

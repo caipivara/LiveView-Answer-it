@@ -37,6 +37,7 @@ import android.os.IBinder;
 import android.telephony.SmsManager;
 import android.util.Log;
 
+import com.makingiants.answerit.InAppBuyActivity;
 import com.makingiants.answerit.R;
 import com.makingiants.answerit.model.calls.Call;
 import com.makingiants.answerit.model.calls.CallManager;
@@ -87,17 +88,6 @@ public class SandboxPlugin extends AbstractPluginService {
 			// Init main handler
 			handler = new Handler();
 
-			// Init airpush ads and check for code
-			/*
-			 * String code = mSharedPreferences.getString(CODE_KEY, ""); if
-			 * (!CodeManager.checkCode(code)) {
-			 * Airpush.enableSDK(getApplicationContext(), true); airpush = new
-			 * Airpush(getApplicationContext());
-			 * airpush.startPushNotification(false);
-			 * //airpush.startSmartWallAd(); //launch smart wall on App start }
-			 * else { Airpush.enableSDK(getApplicationContext(), false); }
-			 */
-
 			// Init backgrounds
 			bitmapBackground = BitmapFactory.decodeStream(this.getResources()
 					.openRawResource(R.drawable.background));
@@ -132,7 +122,6 @@ public class SandboxPlugin extends AbstractPluginService {
 		}
 
 		showingSendImage = false;
-
 	}
 
 	@Override
@@ -246,7 +235,8 @@ public class SandboxPlugin extends AbstractPluginService {
 	@Override
 	protected void onSharedPreferenceChangedExtended(
 			final SharedPreferences prefs, final String key) {
-		if (!key.equals("pluginEnabled")) {
+
+		if (!key.equals("pluginEnabled") && !key.equals("in_app")) {
 
 			final String message = prefs.getString(key, "");
 
@@ -255,8 +245,29 @@ public class SandboxPlugin extends AbstractPluginService {
 					.length() - 1));
 
 			messageManager.addMessage(messageNumber, message);
+		}
+
+		if (key.equals("in_app")) {
+
+			String sku = prefs.getString(key, "");
+
+			Intent inAppIntent = new Intent(this.getApplicationContext(),
+					InAppBuyActivity.class);
+
+			// prefs.getString(key, "");
+
+			inAppIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			inAppIntent.putExtra(InAppBuyActivity.EXTRA_KEY_SKU, sku);
+
+			startActivity(inAppIntent);
+
+			SharedPreferences.Editor editor = prefs.edit();
+			// editor.putString(key, "-1");
+			editor.remove(key);
+			editor.commit();
 
 		}
+
 	}
 
 	/**
@@ -279,7 +290,9 @@ public class SandboxPlugin extends AbstractPluginService {
 	@Override
 	protected void stopPlugin() {
 		// // Log.d(PluginConstants.LOG_TAG, "stopPlugin");
+
 		stopWork();
+
 	}
 
 	// ****************************************************************

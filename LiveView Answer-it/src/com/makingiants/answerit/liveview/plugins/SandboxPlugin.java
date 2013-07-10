@@ -236,6 +236,7 @@ public class SandboxPlugin extends AbstractPluginService {
 	protected void onSharedPreferenceChangedExtended(
 			final SharedPreferences prefs, final String key) {
 
+		Log.d("AAA", key);
 		if (!key.equals("pluginEnabled") && !key.equals("in_app")) {
 
 			final String message = prefs.getString(key, "");
@@ -251,6 +252,11 @@ public class SandboxPlugin extends AbstractPluginService {
 
 			String sku = prefs.getString(key, "");
 
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString(key, "-1");
+			// editor.remove(key);
+			editor.commit();
+
 			Intent inAppIntent = new Intent(this.getApplicationContext(),
 					InAppBuyActivity.class);
 
@@ -260,11 +266,6 @@ public class SandboxPlugin extends AbstractPluginService {
 			inAppIntent.putExtra(InAppBuyActivity.EXTRA_KEY_SKU, sku);
 
 			startActivity(inAppIntent);
-
-			SharedPreferences.Editor editor = prefs.edit();
-			// editor.putString(key, "-1");
-			editor.remove(key);
-			editor.commit();
 
 		}
 

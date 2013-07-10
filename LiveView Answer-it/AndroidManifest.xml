@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.makingiants.answerit"
-    android:versionCode="18"
+    android:versionCode="20"
     android:versionName="1.0.8" >
 
     <uses-sdk
@@ -35,7 +35,7 @@
 
         <activity
             android:name="com.makingiants.answerit.InAppBuyActivity"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name="com.sonyericsson.extras.liveview.plugins.PluginPreferences"
             android:label="Answer-it" >

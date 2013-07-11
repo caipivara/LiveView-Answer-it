@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Answer-it</string>
-    <!-- The following strings needs to be defined in order for the Plugin to function. -->
-    <string name="pluginname">Answer-it</string>
-    <string name="intent_preferences">com.makingiants.answerit.liveview.plugins.PREFERENCES</string>
-    <string name="intent_service">com.makingiants.answerit.liveview.plugins.answeritservice</string>
-    <string name="application_description">Extends:com.sonyericsson.extras.liveview</string>
+    <string name="app_name" translatable="false">Answer-it</string>
+    <string name="pluginname" translatable="false">Answer-it</string>
+    <string name="intent_preferences" translatable="false">com.makingiants.answerit.liveview.plugins.PREFERENCES</string>
+    <string name="intent_service" translatable="false">com.makingiants.answerit.liveview.plugins.answeritservice</string>
+    <string name="application_description" translatable="false">Extends:com.sonyericsson.extras.liveview</string>
+    <!-- UI -->
     <string name="conf_enabled_info">Enabled</string>
     <string name="conf_message_1_info">Message 1</string>
     <string name="conf_message_2_info">Message 2</string>

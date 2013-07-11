@@ -236,7 +236,6 @@ public class SandboxPlugin extends AbstractPluginService {
 	protected void onSharedPreferenceChangedExtended(
 			final SharedPreferences prefs, final String key) {
 
-		Log.d("AAA", key);
 		if (!key.equals("pluginEnabled") && !key.equals("in_app")) {
 
 			final String message = prefs.getString(key, "");

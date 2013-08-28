@@ -27,8 +27,8 @@
     <string name="default_message_10">Je vais mourir si je réponds</string>
 
     <!-- In app Billing -->
-    <string name="conf_in_app_title">Aidez-nous à nourrir les GIANTS!</string>
-    <string name="conf_in_app_summary">Donner de la nourriture et des boissons à développer de meilleures GIANTS!</string>
-    <string name="in_app_message_thanks">Merci de donner! Maintenant, nous pouvons faire plus de GIANTS!</string>
+    <string name="conf_in_app_title">Aidez-nous!</string>
+    <string name="conf_in_app_summary">Donner de la nourriture et des boissons à développer de meilleures apps!</string>
+    <string name="in_app_message_thanks">Merci de donner! Maintenant, nous pouvons faire plus de apps!</string>
 
 </resources>

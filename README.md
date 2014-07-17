@@ -5,9 +5,6 @@
 	<img src="http://3.bp.blogspot.com/-EDx5Clf1jyk/UL_5xAwQejI/AAAAAAAABkw/jQonqWArlZI/s640/answer+it+banner.PNG">
 </a>
 
-[![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.makingiants.answerit) 
-[![Amazon Apps](http://dc341.4shared.com/img/BwIZ_37q/0.8789661429154831/amazon-icon-final-large-512512.jpg)](http://www.amazon.com/MakinGIANTS-LiveView-Answer-it/dp/B00AJZL3WK/ref=sr_1_1?s=mobile-apps&ie=UTF8&qid=1355319796&sr=1-1)
-
 
 This is a plugin for the LiveView device
 (a "smartwatch" for Android).

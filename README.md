@@ -2,7 +2,7 @@
 
 
 <a href="https://play.google.com/store/apps/details?id=com.makingiants.answerit" alt="Download from Google Play">
-	<img src="http://dc201.4shared.com/img/4qS5ZZQo/0.4095983652860181/banner.png">
+	<img src="http://3.bp.blogspot.com/-EDx5Clf1jyk/UL_5xAwQejI/AAAAAAAABkw/jQonqWArlZI/s640/answer+it+banner.PNG">
 </a>
 
 [![Google Play](http://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.makingiants.answerit) 

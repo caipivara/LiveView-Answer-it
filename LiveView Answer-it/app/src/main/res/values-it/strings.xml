@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- UI -->
+    <string name="conf_enabled_info">Enabled</string>
+    <string name="conf_message_1_info">Messaggio 1</string>
+    <string name="conf_message_2_info">Messaggio 2</string>
+    <string name="conf_message_3_info">Messaggio 3</string>
+    <string name="conf_message_4_info">Messaggio 4</string>
+    <string name="conf_message_5_info">Messaggio 5</string>
+    <string name="conf_message_6_info">Messaggio 6</string>
+    <string name="conf_message_7_info">Messaggio 7</string>
+    <string name="conf_message_8_info">Messaggio 8</string>
+    <string name="conf_message_9_info">Messaggio 9</string>
+    <string name="conf_message_10_info">Messaggio 10</string>
+    <string name="plugin_message_no_call_log">0 Chiamate</string>
+    <string name="plugin_message_no_messages">0 Messagi</string>
+    <string name="default_message_1">Non posso rispondere, ti chiamo più tardi!</string>
+    <string name="default_message_2">Sono in una reunione, ti chiamo più tardi!</string>
+    <string name="default_message_3">Sto guidadno la macchina, ti chiamo più tardi!</string>
+    <string name="default_message_4">Sono a lezione, ti chiamo più tardi!</string>
+    <string name="default_message_5">Sono dormito, ti chiamo più tardi!</string>
+    <string name="default_message_6">Sto arrivando, tranquillo!</string>
+    <string name="default_message_7">Arrivo!</string>
+    <string name="default_message_8">Sto gioccando, non posso rispondere se no perdo.</string>
+    <string name="default_message_9">Sono occupato, ti chiamo più tardi</string>
+    <string name="default_message_10">Ti chiamo più tardi</string>
+
+    <!-- In app Billing -->
+    <string name="conf_in_app_title">Aiutaci alimentiamo i GIANTS!</string>
+    <string name="conf_in_app_summary">Dare cibo e bevande per sviluppare migliori apps!</string>
+    <string name="in_app_message_thanks">Grazie per avermi! Ora siamo in grado di fare più apps!</string>
+
+</resources>

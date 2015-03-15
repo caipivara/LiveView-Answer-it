@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/danielgomez22/AndroidStudioProjects/LiveView%20Answer-it/app/src/main/res/values-fr/arrays.xml -->
+    <eat-comment/>
+    <string-array name="in_app_messages">
+        <item>Donner à boire!</item>
+        <item>Donnez un hamburger!</item>
+        <item>Donnez une bière!</item>
+        <item>Donnez une pizza!</item>
+    </string-array>
+    <!-- From: file:/Users/danielgomez22/AndroidStudioProjects/LiveView%20Answer-it/app/src/main/res/values-fr/strings.xml -->
+    <eat-comment/>
+    <string name="conf_enabled_info">Enabled</string>
+    <string name="conf_in_app_summary">Donner de la nourriture et des boissons à développer de meilleures apps!</string>
+    <string name="conf_in_app_title">Aidez-nous!</string>
+    <string name="conf_message_10_info">Message 10</string>
+    <string name="conf_message_1_info">Message 1</string>
+    <string name="conf_message_2_info">Message 2</string>
+    <string name="conf_message_3_info">Message 3</string>
+    <string name="conf_message_4_info">Message 4</string>
+    <string name="conf_message_5_info">Message 5</string>
+    <string name="conf_message_6_info">Message 6</string>
+    <string name="conf_message_7_info">Message 7</string>
+    <string name="conf_message_8_info">Message 8</string>
+    <string name="conf_message_9_info">Message 9</string>
+    <string name="default_message_1">Je ne peux pas répondre,  je t´appelle plus tard</string>
+    <string name="default_message_10">Je vais mourir si je réponds</string>
+    <string name="default_message_2">Je ne peux pas, je t´appelle plus tard</string>
+    <string name="default_message_3">Je suis à une réunion, Je t´appelle plus tard</string>
+    <string name="default_message_4">Je suis en train de conduire, je t´appelle plus tard</string>
+    <string name="default_message_5">Je suis en classe, Je t´appelle plus tard</string>
+    <string name="default_message_6">Je suis en train de une sieste, je t´appelle plus tard</string>
+    <string name="default_message_7">Je suis en train de arrivant, attendez-moi</string>
+    <string name="default_message_8">En route, attendez-moi</string>
+    <string name="default_message_9">En train de jouer, Je vais mourir si je réponds</string>
+    <string name="in_app_message_thanks">Merci de donner! Maintenant, nous pouvons faire plus de apps!</string>
+    <string name="plugin_message_no_call_log">0 Appels</string>
+    <string name="plugin_message_no_messages">0 Messages</string>
+</resources>
